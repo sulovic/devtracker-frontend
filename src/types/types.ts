@@ -47,7 +47,7 @@ export type AxiosLoginResponse = {
 };
 
 export type Product = {
-  productId: number | null;
+  productId?: number;
   productName: string;
 };
 
@@ -66,48 +66,55 @@ export type ModalProps = {
   question: string;
 };
 
-export type IssueType = {
-  typeId: number | null;
+export type Type = {
+  typeId: number;
   typeName: string;
 };
 
-export type IssueStatus = { 
-  statusId: number | null;
+export type Status = { 
+  statusId: number;
   statusName: string;
 }
 
+export type Priority = {
+  priorityId: number;
+  priorityName: string;
+}
+
 export type Issue =   {
-  issueId: number | null;
+  issueId?: number;
   issueName: string;
   issueDesc: string;
   createdAt: Date;
-  closedAt: Date;
-  productId : Product['productId'];
-  typeId: IssueType['typeId'];
-  statusId: IssueStatus['statusId'];
+  closedAt?: Date;
+  products : Product;
+  types: Type;
+  statuses: Status;
+  priority: Priority;
+  users: User;
   statusHistory : StatusHistory[]
   comments: Comments[]
 }
 
 export type StatusHistory = {
-  statusHistoryId: number | null;
+  statusHistoryId?: number;
   createdAt: Date;
   userId: User['userId'];
-  statusId  : IssueStatus['statusId'];
+  statusId  : Status['statusId'];
   issueId: Issue['issueId'];
 }
 
 export type Comments = {
-  commentId: number | null;
+  commentId?: number;
   commentText: string;
   createdAt: Date;
-  userId: User['userId'];
+  users: User;
   issueId: Issue['issueId'];
   documents: Documents[]
 }
 
 export type Documents = {
-  documentId: number | null;
+  documentId?: number;
   documentUrl: string;
   commentId: Comments['commentId'];
 }

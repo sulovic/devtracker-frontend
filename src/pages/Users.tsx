@@ -78,7 +78,7 @@ const Users: React.FC = () => {
         <h3 className="mt-4">Korisnici aplikacije</h3>
         <div>
           <div className="flex justify-end px-3">
-            <button type="button" className="button button-sky " aria-label="EditUser" onClick={() => setShowModalNewUser(true)}>
+            <button type="button" className="button button-sky " aria-label="New User" onClick={() => setShowModalNewUser(true)}>
               Dodaj korisnika
             </button>
           </div>

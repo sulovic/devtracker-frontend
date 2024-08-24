@@ -20,7 +20,7 @@ const Products: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const axiosPrivate = useAxiosPrivate();
   const { authUser } : AuthContextType = useAuth();
-  const tableHeaders = ["Proizvod", "Izmeni", "Obriši"];
+  const tableHeaders : string[] = ["Proizvod", "Izmeni", "Obriši"];
 
   const fetchProducts: () => void = async () => {
     try {
@@ -78,7 +78,7 @@ const Products: React.FC = () => {
         <h3 className="mt-4">Proizvodi</h3>
         <>
           <div className="flex justify-end px-3">
-            <button type="button" className="button button-sky " aria-label="Dodaj proizvod" onClick={() => setShowModalNewProduct(true)}>
+            <button type="button" className="button button-sky " aria-label="New Product" onClick={() => setShowModalNewProduct(true)}>
               Dodaj proizvod
             </button>
           </div>
