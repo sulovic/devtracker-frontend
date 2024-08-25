@@ -13,6 +13,7 @@ export const Priviledges = {
   "/dashboard": 1000,
   "/products": 1000,
   "/users": 5000,
+  "/issue": 1000,
 };
 
 export const DashboardLinks : NavbarLinks[] = [

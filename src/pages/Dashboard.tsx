@@ -9,6 +9,7 @@ import { useAuth } from "../Context/AuthContext";
 import { AxiosInstance } from "axios";
 import { handleApiError } from "../services/errorHandlers";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
   const [showModalNewIssue, setShowModalNewIssue] = useState<boolean>(false);
@@ -17,10 +18,12 @@ const Dashboard: React.FC = () => {
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const { authUser }: AuthContextType = useAuth();
   const tableHeaders: string[] = ["", "ID", "Naziv", "Status", "Kreirano", "Prioritet"];
+  const navigate = useNavigate();
 
   const fetchIssues: () => void = async () => {
     setShowSpinner(true);
     try {
+      //Implement response according to user role
       const response: { data: Issue[] } = await axiosPrivate.get("/api/issues");
       setIssuesData(response?.data);
       console.log(response?.data);
@@ -63,7 +66,7 @@ const Dashboard: React.FC = () => {
                     <tr
                       key={issue?.issueId}
                       className="border-b bg-white hover:!bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 hover:cursor-pointer"
-                      onClick={() => console.log(issue?.issueId)}
+                      onClick={() => navigate(`/issue/${issue?.issueId}`)}
                     >
                       <td key={`index_${index}`}>{index + 1}</td>
                       <td className="uppercase" key={`issueId_${index}`}>

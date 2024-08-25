@@ -5,7 +5,7 @@ import UserMenu from "./UserMenu";
 import { NavbarLinks } from "../types/types.js";
 import type { AuthContextType } from "../types/types.js";
 
-const Navbar: ({ Links }: { Links: NavbarLinks [] }) => JSX.Element = ( {Links = []} ) => {
+const Navbar: React.FC<{ Links?: NavbarLinks[] }> = ( {Links = []} ) => {
   const { authUser }: AuthContextType = useAuth();
   const currentLocation: Location = useLocation();
 

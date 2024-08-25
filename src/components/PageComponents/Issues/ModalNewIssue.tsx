@@ -4,31 +4,51 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import Spinner from "../../Spinner";
 import { toast } from "react-toastify";
 import { AxiosInstance } from "axios";
-import type {  Priority, Type, User, UserRole } from "../../../types/types";
+import type { Priority, Type, Issue, Product, AuthContextType } from "../../../types/types";
 import { handleApiError } from "../../../services/errorHandlers";
+import { useAuth } from "../../../Context/AuthContext";
+import { Navigate } from "react-router-dom";
 
-const ModalNewUser: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetStateAction<boolean>>; fetchIssues: () => void }> = ({
+const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetStateAction<boolean>>; fetchIssues: () => void }> = ({
   setShowModalNewIssue,
   fetchIssues,
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const [allTypes, setAllTypes] = useState<Type[]>([]);
-  const [allPriorities, setAllPriorities ] = useState<Priority[]>([]);
+  const [allPriorities, setAllPriorities] = useState<Priority[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
-  const [newUser, setNewUser] = useState<User>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    roles: [],
+  const { authUser }: AuthContextType = useAuth();
+
+  if (!authUser) {
+    return <Navigate to="/" />;
+  }
+
+  const [newIssue, setNewIssue] = useState<Issue>({
+    issueName: "",
+    issueDesc: "",
+    createdAt: new Date(),
+    users: authUser ? authUser : { firstName: "", lastName: "", email: "", iat: 0, exp: 0, roles: [] },
+    products: { productName: "" },
+    types: { typeName: "" },
+    statuses: { statusId: 1, statusName: "New" },
+    priority: { priorityName: "" },
+    statusHistory: [],
+    comments: [],
   });
 
-  const fatchAllStatusesPriorities: () => void = async () => {
+  console.log(newIssue);
+
+  const fatchAllStatusesPrioritiesTypes: () => void = async () => {
     try {
       setShowSpinner(true);
       const priority: { data: Priority[] } = await axiosPrivate.get("/api/priority");
       setAllPriorities(priority?.data);
       console.log(priority?.data);
+      const products: { data: Product[] } = await axiosPrivate.get("/api/products");
+      setAllProducts(products?.data);
+      console.log(products?.data);
       const types: { data: Type[] } = await axiosPrivate.get("/api/types");
       setAllTypes(types?.data);
       console.log(types?.data);
@@ -40,34 +60,20 @@ const ModalNewUser: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSta
   };
 
   useEffect(() => {
-    fatchAllStatusesPriorities();
+    fatchAllStatusesPrioritiesTypes();
   }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setNewUser({ ...newUser, [e.target.id]: e.target.id === "roleId" ? parseInt(e.target.value) : e.target.value });
-  };
 
   const handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void = (e) => {
     e.preventDefault();
     setShowModal(true);
   };
 
-  const handleChangeRole: (role: UserRole) => void = (role) => {
-    // const editedUser: User = { ...newUser };
-    // if (editedUser.roles?.some((existingRole) => existingRole?.userRoles?.roleId === role?.roleId)) {
-    //   editedUser.roles = editedUser.roles?.filter((existingRole) => existingRole?.userRoles?.roleId !== role?.roleId);
-    // } else {
-    //   editedUser.roles?.push({userRoles: role});
-    // }
-    // setNewUser(editedUser);
-  };
-
   const handleSubmitOk: () => void = async () => {
     try {
       setShowSpinner(true);
-      const responseAddUser: { data: User } = await axiosPrivate.post("/api/users", newUser);
-      if (responseAddUser) {
-        toast.success(`Korisnik ${responseAddUser?.data?.firstName + " " + responseAddUser?.data?.lastName} je uspešno dodat!`, {
+      const responseAddIssue: { data: Issue } = await axiosPrivate.post("/api/issues", newIssue);
+      if (responseAddIssue) {
+        toast.success(`Novi zahtev ${responseAddIssue?.data?.issueName} je uspešno kreiran!`, {
           position: "top-center",
         });
       }
@@ -98,59 +104,96 @@ const ModalNewUser: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSta
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <div>
-                    <label htmlFor="firstName">Ime</label>
+                    <label htmlFor="issueName">Naziv zahteva</label>
                     <input
                       type="text"
-                      id="firstName"
-                      aria-describedby="Ime"
-                      value={newUser?.firstName}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+                      id="issueName"
+                      aria-describedby="Issue Name"
+                      value={newIssue?.issueName}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewIssue({ ...newIssue, [e.target.id]: e.target.value })}
                       maxLength={64}
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="lastName">Prezime</label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      aria-describedby="Prezime"
-                      value={newUser?.lastName}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
-                      maxLength={64}
+                    <label htmlFor="issueDesc">Opis zahteva</label>
+                    <textarea
+                      id="issueDesc"
+                      aria-describedby="Issue Description"
+                      value={newIssue?.issueDesc}
+                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewIssue({ ...newIssue, [e.target.id]: e.target.value })}
+                      maxLength={512}
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="email">Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      aria-describedby="Email"
-                      value={newUser?.email}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
-                      maxLength={64}
+                    <label htmlFor="products">Proizvod</label>
+                    <select
+                      id="products"
+                      aria-label="Select product"
                       required
-                    />
+                      value={newIssue?.products?.productId}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                        setNewIssue({ ...newIssue, [e.target.id]: allProducts.find((product: Product) => product.productId === parseInt(e.target.value)) })
+                      }
+                    >
+                      <option key={`product-"none"`} value="">
+                        Odaberite proizvod sa liste
+                      </option>
+                      {allProducts.length &&
+                        allProducts.map((product: Product) => (
+                          <option key={`product-${product?.productId}`} value={product?.productId}>
+                            {product?.productName}
+                          </option>
+                        ))}
+                    </select>
                   </div>
-                  <div className="md:col-span-2">
-                    <label htmlFor="roleId">Ovlašćenja korisnika</label>
-                    <div className=" flex gap-4 flex-wrap">
-                      {/* {allUserRoles.length &&
-                        allUserRoles.map((role: UserRole) => (
-                          <div className="flex flex-col items-center justify-center" key={role?.roleId}>
-                            <input
-                              type="checkbox"
-                              id={`role-${role?.roleId}`}
-                              name="roleId"
-                              value={role?.roleId}
-                              checked={newUser?.roles ? newUser?.roles.some((asignedRole) => asignedRole?.userRoles?.roleId === role?.roleId) : false}
-                              onChange={() => handleChangeRole(role)}
-                            />
-                            <label htmlFor={`role-${role?.roleId}`}>{role?.roleName}</label>
-                          </div>
-                        ))} */}
-                    </div>
+                  <div>
+                    <label htmlFor="types">Tip zahteva</label>
+                    <select
+                      id="types"
+                      aria-label="Select Issue type"
+                      required
+                      value={newIssue?.types?.typeId}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                        setNewIssue({ ...newIssue, [e.target.id]: allTypes.find((type: Type) => type.typeId === parseInt(e.target.value)) })
+                      }
+                    >
+                      <option key={`type-"none"`} value="">
+                        Odaberite tip zahteva sa liste
+                      </option>
+                      {allTypes.length &&
+                        allTypes.map((type: Type) => (
+                          <option key={`type-${type?.typeId}`} value={type.typeId}>
+                            {type?.typeName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="priority">Prioritet</label>
+                    <select
+                      id="priority"
+                      aria-label="Select priority"
+                      required
+                      value={newIssue?.priority?.priorityId}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                        setNewIssue({
+                          ...newIssue,
+                          [e.target.id]: allPriorities.find((priority: Priority) => priority?.priorityId === parseInt(e.target.value)),
+                        })
+                      }
+                    >
+                      <option key={`priority-"none"`} value="">
+                        Odaberite prioritet sa liste
+                      </option>
+                      {allPriorities.length &&
+                        allPriorities.map((priority: Priority) => (
+                          <option key={`priority-${priority?.priorityId}`} value={priority?.priorityId}>
+                            {priority?.priorityName}
+                          </option>
+                        ))}
+                    </select>
                   </div>
                 </div>
               </div>
@@ -174,7 +217,7 @@ const ModalNewUser: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSta
           onOK={() => handleSubmitOk()}
           onCancel={() => setShowModal(false)}
           title="Potvrda dodavanje novog korisnika"
-          question={`Da li ste sigurni da zelite da dodate novog korisnika ${newUser?.firstName + " " + newUser?.lastName}?`}
+          question={`Da li ste sigurni da zelite da kreirate nov zahtev ${newIssue?.issueName}?`}
         />
       )}
       {showSpinner && <Spinner />}
@@ -182,4 +225,4 @@ const ModalNewUser: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSta
   );
 };
 
-export default ModalNewUser;
+export default ModalNewIssue;

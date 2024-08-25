@@ -1,4 +1,5 @@
 export type AuthUser = {
+  userId?: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -13,16 +14,6 @@ export type AuthUser = {
 export type UserRole = {
   roleId: number;
   roleName: string;
-};
-
-export type User = {
-  userId?: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  roles?: {
-     userRoles: UserRole;
-  }[];
 };
 
 export type LoginData = {
@@ -67,17 +58,17 @@ export type ModalProps = {
 };
 
 export type Type = {
-  typeId: number;
+  typeId?: number;
   typeName: string;
 };
 
 export type Status = { 
-  statusId: number;
+  statusId?: number;
   statusName: string;
 }
 
 export type Priority = {
-  priorityId: number;
+  priorityId?: number;
   priorityName: string;
 }
 
@@ -91,7 +82,7 @@ export type Issue =   {
   types: Type;
   statuses: Status;
   priority: Priority;
-  users: User;
+  users: AuthUser;
   statusHistory : StatusHistory[]
   comments: Comments[]
 }
@@ -99,22 +90,22 @@ export type Issue =   {
 export type StatusHistory = {
   statusHistoryId?: number;
   createdAt: Date;
-  userId: User['userId'];
-  statusId  : Status['statusId'];
-  issueId: Issue['issueId'];
+  users: AuthUser;
+  status  : Status;
+  issue: Issue;
 }
 
 export type Comments = {
   commentId?: number;
   commentText: string;
   createdAt: Date;
-  users: User;
-  issueId: Issue['issueId'];
+  users: AuthUser;
+  issue: Issue;
   documents: Documents[]
 }
 
 export type Documents = {
   documentId?: number;
   documentUrl: string;
-  commentId: Comments['commentId'];
+  comments: Comments;
 }
