@@ -4,7 +4,7 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import Spinner from "../../Spinner";
 import { toast } from "react-toastify";
 import { AxiosInstance } from "axios";
-import type { User, UserRole } from "../../../types/types";
+import type { AuthUser, UserRole } from "../../../types/types";
 import { handleApiError } from "../../../services/errorHandlers";
 
 const ModalNewUser: React.FC<{ setShowModalNewUser: React.Dispatch<React.SetStateAction<boolean>>; fetchUsers: () => void }> = ({
@@ -15,7 +15,7 @@ const ModalNewUser: React.FC<{ setShowModalNewUser: React.Dispatch<React.SetStat
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const [allUserRoles, setAllUserRoles] = useState<UserRole[]>([]);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
-  const [newUser, setNewUser] = useState<User>({
+  const [newUser, setNewUser] = useState<AuthUser>({
     firstName: "",
     lastName: "",
     email: "",
@@ -49,11 +49,11 @@ const ModalNewUser: React.FC<{ setShowModalNewUser: React.Dispatch<React.SetStat
   };
 
   const handleChangeRole: (role: UserRole) => void = (role) => {
-    const editedUser: User = { ...newUser };
-    if (editedUser.roles?.some((existingRole) => existingRole?.userRoles?.roleId === role?.roleId)) {
-      editedUser.roles = editedUser.roles?.filter((existingRole) => existingRole?.userRoles?.roleId !== role?.roleId);
+    const editedUser: AuthUser = { ...newUser };
+    if (editedUser.roles?.some((existingRole) => existingRole?.userRole?.roleId === role?.roleId)) {
+      editedUser.roles = editedUser.roles?.filter((existingRole) => existingRole?.userRole?.roleId !== role?.roleId);
     } else {
-      editedUser.roles?.push({userRoles: role});
+      editedUser.roles?.push({userRole: role});
     }
     setNewUser(editedUser);
   };
@@ -61,7 +61,7 @@ const ModalNewUser: React.FC<{ setShowModalNewUser: React.Dispatch<React.SetStat
   const handleSubmitOk: () => void = async () => {
     try {
       setShowSpinner(true);
-      const responseAddUser: { data: User } = await axiosPrivate.post("/api/users", newUser);
+      const responseAddUser: { data: AuthUser } = await axiosPrivate.post("/api/users", newUser);
       if (responseAddUser) {
         toast.success(`Korisnik ${responseAddUser?.data?.firstName + " " + responseAddUser?.data?.lastName} je uspešno dodat!`, {
           position: "top-center",
@@ -140,7 +140,7 @@ const ModalNewUser: React.FC<{ setShowModalNewUser: React.Dispatch<React.SetStat
                               id={`role-${role?.roleId}`}
                               name="roleId"
                               value={role?.roleId}
-                              checked={newUser?.roles ? newUser?.roles.some((asignedRole) => asignedRole?.userRoles?.roleId === role?.roleId) : false}
+                              checked={newUser?.roles ? newUser?.roles.some((asignedRole) => asignedRole?.userRole?.roleId === role?.roleId) : false}
                               onChange={() => handleChangeRole(role)}
                             />
                             <label htmlFor={`role-${role?.roleId}`}>{role?.roleName}</label>

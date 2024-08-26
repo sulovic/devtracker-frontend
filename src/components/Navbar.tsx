@@ -22,7 +22,7 @@ const Navbar: React.FC<{ Links?: NavbarLinks[] }> = ( {Links = []} ) => {
           <ul className="mb-0">
             {Links.map(
               (link, index) =>
-                authUser?.roles.some((role) => role?.roleId > link?.minRole) && (
+                authUser?.roles.some((role) => role?.userRole?.roleId > link?.minRole) && (
                   <li className="mt-3 text-end	text-lg font-medium lg:!mt-0 lg:inline-block" key={index}>
                     <Link
                       className={`mr-4 no-underline ${currentLocation.pathname === link?.href ? `text-sky-200` : `text-sky-100`} hover:text-white`}

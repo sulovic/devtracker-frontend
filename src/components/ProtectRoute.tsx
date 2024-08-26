@@ -8,7 +8,7 @@ const ProtectRoute : React.FC<{ minRole: number }> = ({ minRole = 5000 }) => {
   const { authUser } : AuthContextType = useAuth();
   const navigate: NavigateFunction = useNavigate();
 
-  if (authUser && authUser?.roles.some((role) => role?.roleId > minRole)) {
+  if (authUser && authUser?.roles.some((role) => role?.userRole?.roleId > minRole)) {
     return <Outlet />;
   } else {
     toast.warning(

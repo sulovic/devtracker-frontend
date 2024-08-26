@@ -17,7 +17,6 @@ const Dashboard: React.FC = () => {
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const { authUser }: AuthContextType = useAuth();
-  const tableHeaders: string[] = ["", "ID", "Naziv", "Status", "Kreirano", "Prioritet"];
   const navigate = useNavigate();
 
   const fetchIssues: () => void = async () => {
@@ -26,7 +25,6 @@ const Dashboard: React.FC = () => {
       //Implement response according to user role
       const response: { data: Issue[] } = await axiosPrivate.get("/api/issues");
       setIssuesData(response?.data);
-      console.log(response?.data);
     } catch (err: any) {
       handleApiError(err);
     } finally {
@@ -50,14 +48,15 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="relative my-4 overflow-x-auto shadow-lg sm:rounded-lg">
           <div className="table-responsive p-3">
-            <table className="w-full text-center text-sm text-zinc-500 rtl:text-right dark:text-zinc-400 ">
-              <thead className=" bg-zinc-200 uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400">
+            <table className="w-full text-sm text-zinc-500 rtl:text-right dark:text-zinc-400 ">
+              <thead className=" text-left bg-zinc-300 uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400">
                 <tr>
-                  {tableHeaders.map((tableKey, index) => (
-                    <th className="px-6 py-3" key={index}>
-                      {tableKey}
-                    </th>
-                  ))}
+                  <th className="px-4 py-4 "> </th>
+                  <th className="px-4 py-4 "> ID</th>
+                  <th className="px-4 py-4 w-6/12"> Naziv</th>
+                  <th className="px-4 py-4 "> Status</th>
+                  <th className="px-4 py-4 "> Kreiran</th>
+                  <th className="px-4 py-4 "> Prioritet</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,10 +69,12 @@ const Dashboard: React.FC = () => {
                     >
                       <td key={`index_${index}`}>{index + 1}</td>
                       <td className="uppercase" key={`issueId_${index}`}>
-                        {issue?.types?.typeName}-{issue?.issueId}
+                        <p className="bg-zinc-100">
+                          {issue?.type?.typeName}-{issue?.issueId}
+                        </p>
                       </td>
                       <td key={`issueName_${index}`}>{issue?.issueName}</td>
-                      <td key={`issueStatus_${index}`}>{issue?.statuses?.statusName}</td>
+                      <td key={`issueStatus_${index}`}>{issue?.status?.statusName}</td>
                       <td key={`issueCreatedAt_${index}`}>{format(issue?.createdAt, "dd.MM.yyyy")}</td>
                       <td key={`issuePriority_${index}`}>{issue?.priority?.priorityName}</td>
                     </tr>

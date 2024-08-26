@@ -3,11 +3,11 @@ import Modal from "../../Modal";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import Spinner from "../../Spinner";
 import { toast } from "react-toastify";
-import type { User, UserRole } from "../../../types/types";
+import type { AuthUser, UserRole } from "../../../types/types";
 import { handleApiError } from "../../../services/errorHandlers";
 import { AxiosInstance } from "axios";
 
-const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetStateAction<boolean>>; fetchUsers: () => void; selectedUser: User }> = ({
+const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetStateAction<boolean>>; fetchUsers: () => void; selectedUser: AuthUser }> = ({
   setShowModalEditUser,
   fetchUsers,
   selectedUser,
@@ -15,7 +15,7 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
-  const [editedUser, setEditedUser] = useState<User>(selectedUser);
+  const [editedUser, setEditedUser] = useState<AuthUser>(selectedUser);
   const [allUserRoles, setAllUserRoles] = useState<UserRole[]>([]);
 
   const fatchAllRoles: () => void = async () => {
@@ -39,11 +39,11 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
   };
 
   const handleChangeRole: (role: UserRole) => void = (role) => {
-    const editedUserData: User = { ...editedUser };
-    if (editedUserData.roles?.some((existingRole) => existingRole?.userRoles?.roleId === role?.roleId)) {
-      editedUserData.roles = editedUserData.roles?.filter((existingRole) => existingRole?.userRoles?.roleId !== role?.roleId);
+    const editedUserData: AuthUser = { ...editedUser };
+    if (editedUserData.roles?.some((existingRole) => existingRole?.userRole?.roleId === role?.roleId)) {
+      editedUserData.roles = editedUserData.roles?.filter((existingRole) => existingRole?.userRole?.roleId !== role?.roleId);
     } else {
-      editedUserData.roles?.push({userRoles: role});
+      editedUserData.roles?.push({userRole: role});
     }
     setEditedUser(editedUserData);
   };
@@ -138,7 +138,7 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
                               id={`role-${role?.roleId}`}
                               name="roleId"
                               value={role?.roleId}
-                              checked={editedUser?.roles ? editedUser?.roles.some((asignedRole) => asignedRole?.userRoles?.roleId === role?.roleId) : false}
+                              checked={editedUser?.roles ? editedUser?.roles.some((asignedRole) => asignedRole?.userRole?.roleId === role?.roleId) : false}
                               onChange={() => handleChangeRole(role)}
                             />
                             <label htmlFor={`role-${role?.roleId}`}>{role?.roleName}</label>

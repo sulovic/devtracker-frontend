@@ -8,26 +8,28 @@ import { useAuth } from "../Context/AuthContext";
 import ModalNewUser from "../components/PageComponents/Users/ModalNewUser";
 import ModalEditUser from "../components/PageComponents/Users/ModalEditUser";
 import { toast } from "react-toastify";
-import { User, AuthContextType, UserRole } from "../types/types";
+import { AuthUser, AuthContextType, UserRole } from "../types/types";
 import { AxiosInstance } from "axios";
 import { handleApiError } from "../services/errorHandlers";
 
 const Users: React.FC = () => {
-  const [usersData, setUsersData] = useState<User[]>([]);
+  const [usersData, setUsersData] = useState<AuthUser[]>([]);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<AuthUser | null>(null);
   const [showModalNewUser, setShowModalNewUser] = useState<boolean>(false);
   const [showModalEditUser, setShowModalEditUser] = useState<boolean>(false);
   const [showModalDeleteUser, setShowModalDeleteUser] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const { authUser }: AuthContextType = useAuth();
-  const tableHeaders: string[] = ["Ime i prezime", "Email", "Nivo ovašćenja", "Izmeni", "Obriši"];
+  
+  console.log(authUser)
 
   const fetchUsers: () => void = async () => {
     setShowSpinner(true);
     try {
-      const response: { data: User[] } = await axiosPrivate.get("/api/users");
+      const response: { data: AuthUser[] } = await axiosPrivate.get("/api/users");
       setUsersData(response?.data);
+      console.log(response?.data);
     } catch (err: any) {
       handleApiError(err);
     } finally {
@@ -39,12 +41,12 @@ const Users: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const handleEditUser: (user: User) => void = (user) => {
+  const handleEditUser: (user: AuthUser) => void = (user) => {
     setSelectedUser(user);
     setShowModalEditUser(true);
   };
 
-  const handleDeleteUser: (user: User) => void = (user) => {
+  const handleDeleteUser: (user: AuthUser) => void = (user) => {
     setSelectedUser(user);
     setShowModalDeleteUser(true);
   };
@@ -88,14 +90,14 @@ const Users: React.FC = () => {
           <div>
             <div className="relative my-4 overflow-x-auto shadow-lg sm:rounded-lg">
               <div className="table-responsive p-3">
-                <table className="w-full text-center text-sm text-zinc-500 rtl:text-right dark:text-zinc-400 ">
+                <table className="w-full text-left text-sm text-zinc-500 rtl:text-right dark:text-zinc-400 ">
                   <thead className=" bg-zinc-200 uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400">
                     <tr>
-                      {tableHeaders.map((tableKey, index) => (
-                        <th className="px-6 py-3" key={index}>
-                          {tableKey}
-                        </th>
-                      ))}
+                      <th className="px-4 py-4 w-2/12">Ime i prezime</th>
+                      <th className="px-4 py-4 w-2/12"> Email</th>
+                      <th className="px-4 py-4 w-6/12"> Nivo ovlašćenja</th>
+                      <th className="px-4 py-4 "> Izmeni</th>
+                      <th className="px-4 py-4 "> Obriši</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -106,9 +108,11 @@ const Users: React.FC = () => {
                             <td key={`email_${index}`}>{user?.email}</td>
                             <td key={`role_${index}`}>
                               <div className="flex gap-2 justify-center align-items-center">
-                                {user?.roles && user?.roles.map((role) => (
-                                  <div key={role?.userRoles?.roleId}>{role?.userRoles?.roleName}</div>
-                                ))}
+                                {user?.roles &&
+                                  user?.roles.map((role) => {
+                                    console.log(role);
+                                    return <div key={role?.userRole?.roleId}>{role?.userRole?.roleName}</div>;
+                                  })}
                               </div>
                             </td>
                             <td key={`editUser_${index}`} className="text-center">
@@ -116,7 +120,7 @@ const Users: React.FC = () => {
                                 type="button"
                                 className="button button-sky"
                                 aria-label="EditUser"
-                                disabled={authUser?.email === user?.email || !authUser?.roles.some((role) => role?.roleId > 5000)}
+                                disabled={authUser?.email === user?.email || !authUser?.roles.some((role) => role?.userRole?.roleId > 5000)}
                                 onClick={() => handleEditUser(user)}
                               >
                                 Izmeni
@@ -127,7 +131,7 @@ const Users: React.FC = () => {
                                 type="button"
                                 className="button button-red"
                                 aria-label="Delete"
-                                disabled={authUser?.email === user?.email || !authUser?.roles.some((role) => role?.roleId > 5000)}
+                                disabled={authUser?.email === user?.email || !authUser?.roles.some((role) => role?.userRole?.roleId > 5000)}
                                 onClick={() => handleDeleteUser(user)}
                               >
                                 Obriši

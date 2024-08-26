@@ -3,12 +3,9 @@ export type AuthUser = {
   firstName: string;
   lastName: string;
   email: string;
-  iat: number;
-  exp: number;
-  roles: {
-    roleId: number;
-    userId: number;
-  }[];
+  iat?: number;
+  exp?: number;
+  roles: { userRole: UserRole }[];
 };
 
 export type UserRole = {
@@ -62,50 +59,50 @@ export type Type = {
   typeName: string;
 };
 
-export type Status = { 
+export type Status = {
   statusId?: number;
   statusName: string;
-}
+};
 
 export type Priority = {
   priorityId?: number;
   priorityName: string;
-}
+};
 
-export type Issue =   {
+export type Issue = {
   issueId?: number;
   issueName: string;
   issueDesc: string;
   createdAt: Date;
   closedAt?: Date;
-  products : Product;
-  types: Type;
-  statuses: Status;
+  product?: Product;
+  type: Type;
+  status: Status;
   priority: Priority;
-  users: AuthUser;
-  statusHistory : StatusHistory[]
-  comments: Comments[]
-}
+  user: AuthUser;
+  statusHistory: StatusHistory[];
+  comments: Comments[];
+};
 
 export type StatusHistory = {
   statusHistoryId?: number;
   createdAt: Date;
-  users: AuthUser;
-  status  : Status;
-  issue: Issue;
-}
+  userId: AuthUser["userId"];
+  statusId: Status["statusId"];
+  issueId: Issue["issueId"];
+};
 
 export type Comments = {
   commentId?: number;
   commentText: string;
   createdAt: Date;
-  users: AuthUser;
-  issue: Issue;
-  documents: Documents[]
-}
+  user: AuthUser;
+  issueId: Issue["issueId"];
+  documents: Documents[];
+};
 
 export type Documents = {
   documentId?: number;
   documentUrl: string;
-  comments: Comments;
-}
+  commentId: Comments["commentId"];
+};

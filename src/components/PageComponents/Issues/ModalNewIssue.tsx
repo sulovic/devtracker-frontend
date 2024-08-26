@@ -17,7 +17,6 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const [allTypes, setAllTypes] = useState<Type[]>([]);
   const [allPriorities, setAllPriorities] = useState<Priority[]>([]);
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const { authUser }: AuthContextType = useAuth();
 
@@ -29,10 +28,9 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
     issueName: "",
     issueDesc: "",
     createdAt: new Date(),
-    users: authUser ? authUser : { firstName: "", lastName: "", email: "", iat: 0, exp: 0, roles: [] },
-    products: { productName: "" },
-    types: { typeName: "" },
-    statuses: { statusId: 1, statusName: "New" },
+    user: authUser ? authUser : { firstName: "", lastName: "", email: "", iat: 0, exp: 0, roles: [] },
+    type: { typeName: "" },
+    status: { statusId: 1, statusName: "New" },
     priority: { priorityName: "" },
     statusHistory: [],
     comments: [],
@@ -40,18 +38,13 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
 
   console.log(newIssue);
 
-  const fatchAllStatusesPrioritiesTypes: () => void = async () => {
+  const fetchAllPrioritiesTypes: () => void = async () => {
     try {
       setShowSpinner(true);
       const priority: { data: Priority[] } = await axiosPrivate.get("/api/priority");
       setAllPriorities(priority?.data);
-      console.log(priority?.data);
-      const products: { data: Product[] } = await axiosPrivate.get("/api/products");
-      setAllProducts(products?.data);
-      console.log(products?.data);
       const types: { data: Type[] } = await axiosPrivate.get("/api/types");
       setAllTypes(types?.data);
-      console.log(types?.data);
     } catch (err: any) {
       handleApiError(err);
     } finally {
@@ -60,7 +53,7 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
   };
 
   useEffect(() => {
-    fatchAllStatusesPrioritiesTypes();
+    fetchAllPrioritiesTypes();
   }, []);
 
   const handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void = (e) => {
@@ -68,7 +61,7 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
     setShowModal(true);
   };
 
-  const handleSubmitOk: () => void = async () => {
+  const handleSubmitOK: () => void = async () => {
     try {
       setShowSpinner(true);
       const responseAddIssue: { data: Issue } = await axiosPrivate.post("/api/issues", newIssue);
@@ -89,10 +82,10 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
 
   return (
     <div className="relative z-5">
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <form className="flex min-h-full items-center justify-center p-4 text-center" onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
-          <div className="relative p-4 transform w-full max-w-3xl overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:p-8">
+          <div className="relative p-4 transform w-full max-w-3xl overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl sm:p-8">
             <div className="w-full sm:mt-0 py-4">
               {/* Modal Head */}
               <div className="text-left">
@@ -127,34 +120,12 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
                     />
                   </div>
                   <div>
-                    <label htmlFor="products">Proizvod</label>
+                    <label htmlFor="type">Tip zahteva</label>
                     <select
-                      id="products"
-                      aria-label="Select product"
-                      required
-                      value={newIssue?.products?.productId}
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setNewIssue({ ...newIssue, [e.target.id]: allProducts.find((product: Product) => product.productId === parseInt(e.target.value)) })
-                      }
-                    >
-                      <option key={`product-"none"`} value="">
-                        Odaberite proizvod sa liste
-                      </option>
-                      {allProducts.length &&
-                        allProducts.map((product: Product) => (
-                          <option key={`product-${product?.productId}`} value={product?.productId}>
-                            {product?.productName}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label htmlFor="types">Tip zahteva</label>
-                    <select
-                      id="types"
+                      id="type"
                       aria-label="Select Issue type"
                       required
-                      value={newIssue?.types?.typeId}
+                      value={newIssue?.type?.typeId}
                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setNewIssue({ ...newIssue, [e.target.id]: allTypes.find((type: Type) => type.typeId === parseInt(e.target.value)) })
                       }
@@ -214,10 +185,10 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
       </div>
       {showModal && (
         <Modal
-          onOK={() => handleSubmitOk()}
+          onOK={() => handleSubmitOK()}
           onCancel={() => setShowModal(false)}
-          title="Potvrda dodavanje novog korisnika"
-          question={`Da li ste sigurni da zelite da kreirate nov zahtev ${newIssue?.issueName}?`}
+          title="Potvrda dodavanje novog zahteva"
+          question={`Da li ste sigurni da želite da kreirate nov zahtev: ${newIssue?.issueName}?`}
         />
       )}
       {showSpinner && <Spinner />}

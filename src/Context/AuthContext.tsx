@@ -21,6 +21,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           const decodedAccessToken: AuthUser = jwtDecode(accessToken);
           setAuthUser(decodedAccessToken);
           setAccessToken(accessToken);
+
+          console.log(decodedAccessToken)
           toast.success(`Uspešno ste se prijavili`, {
             position: "top-center",
           });
