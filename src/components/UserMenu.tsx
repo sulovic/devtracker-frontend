@@ -3,9 +3,10 @@ import { Link, Location, NavigateFunction, useLocation, useNavigate } from "reac
 import { useAuth } from "../Context/AuthContext";
 import Modal from "./Modal";
 import { NavbarLinks } from "../types/types";
+import { AuthContextType } from "../types/types";
 
 const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
-  const { authUser, handleLogout } = useAuth();
+  const { authUser, handleLogout }: AuthContextType = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
   const [menuHidden, setMenuHidden] = useState<boolean>(true);
   const navigate: NavigateFunction = useNavigate();
@@ -33,9 +34,7 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
     setMenuHidden(true);
     handleLogout();
     setShowLogoutModal(false);
-    navigate("/");
   };
-
 
   return (
     <>
@@ -73,7 +72,7 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
 
             {Links.map(
               (link, index) =>
-                authUser?.roles.some((role) => role?.roleId > link?.minRole) && (
+                authUser?.roles.some((role) => role?.userRole?.roleId > link?.minRole) && (
                   <li
                     className={`block px-4 py-2 font-medium no-underline ${
                       currentLocation.pathname === link?.href ? `text-gray-500` : `text-gray-600`

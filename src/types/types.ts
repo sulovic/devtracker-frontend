@@ -76,6 +76,7 @@ export type Issue = {
   createdAt: Date;
   closedAt?: Date;
   product?: Product;
+  respRole: UserRole;
   type: Type;
   status: Status;
   priority: Priority;
@@ -106,3 +107,5 @@ export type Documents = {
   documentUrl: string;
   commentId: Comments["commentId"];
 };
+
+export type SelectorProperties = "product" | "type" | "status" | "priority";

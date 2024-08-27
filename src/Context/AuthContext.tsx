@@ -4,12 +4,14 @@ import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import type { AuthUser, AuthContextType, LoginData, AxiosLoginResponse } from "../types/types";
 import { handleApiError } from "../services/errorHandlers";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleLogin : AuthContextType["handleLogin"]   = async ({ type, email, password, credential }) => {
     // User / password login
@@ -55,9 +57,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await ApiLogoutConnector();
       setAuthUser(null);
       setAccessToken(null);
+      navigate("/");
       toast.success(`Uspešno ste se odjavili`, {
         position: "top-center",
       });
+      
     } catch (error) {
       handleApiError(error);
     }

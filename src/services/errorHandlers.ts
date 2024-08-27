@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 export const handleApiError: (error: any) => void = (error) => {
   if (error.response?.status === 400) {
-    toast.warning("Nnisu poslati podaci za upis.", {
+    toast.warning("Nisu poslati podaci za upis.", {
       position: "top-center",
     });
     console.error(error);

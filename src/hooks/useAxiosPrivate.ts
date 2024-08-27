@@ -35,7 +35,6 @@ const useAxiosPrivate: () => AxiosInstance = () => {
           prevRequest.sent = true;
           try {
             const newAccessToken = await handleRefreshToken();
-            console.log("Refreshing token");
             prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
             return axiosPrivate(prevRequest);
           } catch (refreshError) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import type { Issue } from "../types/types";
+import { useNavigate, useLocation, NavigateFunction } from "react-router-dom";
+import type { Issue, Product, Priority, Type, Status, AuthContextType } from "../types/types";
 import { format } from "date-fns";
 import { DashboardLinks } from "../config/config";
 import Navbar from "../components/Navbar";
@@ -9,8 +9,10 @@ import { handleApiError } from "../services/errorHandlers";
 import Spinner from "../components/Spinner";
 import { AxiosInstance } from "axios";
 import ModalNewComment from "../components/PageComponents/Issues/ModalNewComment";
-import Edit from "../components/PageComponents/Icons/Edit";
-import ModalEditProductTypePriority from "../components/PageComponents/Issues/ModalEditProductTypePriority";
+import Forward from "../components/PageComponents/Icons/Forward";
+import Backward from "../components/PageComponents/Icons/Backward";
+import { useAuth } from "../Context/AuthContext";
+import ModalProcessIssue from "../components/PageComponents/Issues/ModalProcessIssue";
 
 const Issue: React.FC = () => {
   const location = useLocation();
@@ -18,14 +20,19 @@ const Issue: React.FC = () => {
   const [issue, setIssue] = useState<Issue | null>(null);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const [showModalNewComment, setShowModalNewComment] = useState<boolean>(false);
-  const [showModalEditProductTypePriority, setShowModalEditProductTypePriority] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModalProcessIssue, setShowModalProcessIssue] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
+  const navigate: NavigateFunction = useNavigate();
+  const { authUser }: AuthContextType = useAuth();
 
   const fetchIssue: () => void = async () => {
     try {
       setShowSpinner(true);
       const response: { data: Issue } = await axiosPrivate.get(`/api/issues/${id}`);
-      setIssue(response?.data);
+      if (response.data) {
+        setIssue(response?.data);
+      }
     } catch (err: any) {
       handleApiError(err);
     } finally {
@@ -37,6 +44,11 @@ const Issue: React.FC = () => {
     fetchIssue();
   }, []);
 
+  const handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void = (e) => {
+    e.preventDefault();
+    setShowModalProcessIssue(true);
+  };
+
 
   return (
     <>
@@ -44,36 +56,49 @@ const Issue: React.FC = () => {
 
       {issue !== null && (
         <div className="mx-2 md:mx-4">
-          <h3 className="mt-4 text-center">
-            Pregled zahteva {issue?.type?.typeName}-{issue?.issueId}
-          </h3>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pb-4">
-            <div className="mt-4 text-center col-span-2 lg:col-start-2  bg-sky-200 border-sky-500 border-2 px-2 rounded-lg">
-              <h3>{issue?.issueName}</h3>
+          <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
+            <h3 className="mt-4 text-center">
+              Pregled zahteva {issue?.type?.typeName}-{issue?.issueId}
+            </h3>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 pb-4">
+              <button
+                onClick={() => navigate(`/dashboard`)}
+                className=" flex items-center justify-center gap-2 text-center bg-sky-100 border-sky-500 border-2  rounded-lg"
+              >
+                <Backward IconClick={() => {}} />
+                <h3>Nazad</h3>
+              </button>
+              <div className=" text-center lg:col-span-2  bg-sky-100 border-sky-500 border-2 rounded-lg">
+                <h3>{issue?.issueName}</h3>
+              </div>
+              <button
+                type="submit"
+                className=" flex items-center justify-center gap-2 text-center bg-sky-100 border-sky-500 border-2 rounded-lg"
+                disabled={authUser ? !authUser?.roles.some((role) => role?.userRole?.roleId === issue?.respRole?.roleId) : true}
+              >
+                <h3>Obradi</h3>
+                <Forward IconClick={() => {}} />
+              </button>
             </div>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-            <div className="min-h-24 bg-cyan-200 border-cyan-500 border-2 px-2 rounded-lg relative">
-              <h3 className="text-cyan-500">Proizvod</h3>
-              <h4 className="text-cyan-500">{issue?.product?.productName}</h4>
-              <Edit IconClick={() => setShowModalEditProductTypePriority(true)} />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+              <div className="min-h-24 bg-sky-50 border-sky-400 border-2 px-2 rounded-lg relative">
+                <h4 className="text-sky-500 font-medium">Proizvod</h4>
+                <h5 className="text-sky-500 font-medium">{issue?.product?.productName}</h5>
+              </div>
+              <div className="min-h-24 bg-sky-50 border-sky-400 border-2 px-2 rounded-lg relative">
+                <h4 className="text-sky-500 font-medium">Tip</h4>
+                <h5 className="text-sky-500 font-medium">{issue?.type?.typeName}</h5>
+              </div>
+              <div className="min-h-24 bg-sky-50 border-sky-400 border-2 px-2 rounded-lg relative">
+                <h4 className="text-sky-500 font-medium">Prioritet</h4>
+                <h5 className="text-sky-500 font-medium">{issue?.priority?.priorityName}</h5>
+              </div>
+              <div className="min-h-24 bg-sky-50 border-sky-400 border-2 px-2 rounded-lg relative">
+                <h4 className="text-sky-500 font-medium">Status</h4>
+                <h5 className="text-sky-500 font-medium">{issue?.status?.statusName + " >> " + issue?.respRole?.roleName}</h5>
+              </div>
             </div>
-            <div className="min-h-24 bg-cyan-200 border-cyan-500 border-2 px-2 rounded-lg relative">
-              <h3 className="text-cyan-500">Tip</h3>
-              <h4 className="text-cyan-500">{issue?.type?.typeName}</h4>
-              <Edit IconClick={() => setShowModalEditProductTypePriority(true)} />
-            </div>
-            <div className="min-h-24 bg-cyan-200 border-cyan-500 border-2 px-2 rounded-lg relative">
-              <h3 className="text-cyan-500">Prioritet</h3>
-              <h4 className="text-cyan-500">{issue?.priority?.priorityName}</h4>
-              <Edit IconClick={() => setShowModalEditProductTypePriority(true)} />
-            </div>
-            <div className="min-h-24 bg-cyan-200 border-cyan-500 border-2 px-2 rounded-lg relative">
-              <h3 className="text-cyan-500">Status</h3>
-              <h4 className="text-cyan-500">{issue?.status?.statusName}</h4>
-            </div>
-          </div>
+          </form>
           <div className=" bg-zinc-200 border-zinc-400 border-2 px-2 rounded-lg mt-4 ">
             <div className="min-h-12">
               <p>Opis zahteva: {issue?.issueDesc}</p>
@@ -119,8 +144,8 @@ const Issue: React.FC = () => {
 
       {showSpinner && <Spinner />}
       {showModalNewComment && issue && <ModalNewComment setShowModalNewComment={setShowModalNewComment} fetchIssue={fetchIssue} issue={issue} />}
-      {showModalEditProductTypePriority && issue && (
-        <ModalEditProductTypePriority setShowModalEditProductTypePriority={setShowModalEditProductTypePriority} fetchIssue={fetchIssue} issue={issue} />
+      {showModalProcessIssue && issue && (
+        <ModalProcessIssue setShowModalProcessIssue={setShowModalProcessIssue} fetchIssue={fetchIssue} issue={issue} />
       )}
     </>
   );
