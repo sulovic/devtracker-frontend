@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+import useAuth from "../hooks/useAuth";
 import Spinner from "./Spinner";
 import type { AuthContextType } from "../types/types";
 import { handleApiError } from "../services/errorHandlers";

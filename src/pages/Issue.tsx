@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, NavigateFunction } from "react-router-dom";
-import type { Issue, Product, Priority, Type, Status, AuthContextType } from "../types/types";
-import { format } from "date-fns";
+import type { Issue, AuthContextType } from "../types/types";
 import { DashboardLinks } from "../config/config";
 import Navbar from "../components/Navbar";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
@@ -11,8 +10,11 @@ import { AxiosInstance } from "axios";
 import ModalNewComment from "../components/PageComponents/Issues/ModalNewComment";
 import Forward from "../components/PageComponents/Icons/Forward";
 import Backward from "../components/PageComponents/Icons/Backward";
-import { useAuth } from "../Context/AuthContext";
+import useAuth from "../hooks/useAuth";
 import ModalProcessIssue from "../components/PageComponents/Issues/ModalProcessIssue";
+import StatusCard from "../components/PageComponents/Issues/StatusCard";
+import CommentCard from "../components/PageComponents/Issues/CommentCard";
+import IssueCard from "../components/PageComponents/Issues/IssueCard";
 
 const Issue: React.FC = () => {
   const location = useLocation();
@@ -20,7 +22,6 @@ const Issue: React.FC = () => {
   const [issue, setIssue] = useState<Issue | null>(null);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const [showModalNewComment, setShowModalNewComment] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [showModalProcessIssue, setShowModalProcessIssue] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const navigate: NavigateFunction = useNavigate();
@@ -48,7 +49,6 @@ const Issue: React.FC = () => {
     e.preventDefault();
     setShowModalProcessIssue(true);
   };
-
 
   return (
     <>
@@ -81,57 +81,14 @@ const Issue: React.FC = () => {
               </button>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-              <div className="min-h-24 bg-sky-50 border-sky-400 border-2 px-2 rounded-lg relative">
-                <h4 className="text-sky-500 font-medium">Proizvod</h4>
-                <h5 className="text-sky-500 font-medium">{issue?.product?.productName}</h5>
-              </div>
-              <div className="min-h-24 bg-sky-50 border-sky-400 border-2 px-2 rounded-lg relative">
-                <h4 className="text-sky-500 font-medium">Tip</h4>
-                <h5 className="text-sky-500 font-medium">{issue?.type?.typeName}</h5>
-              </div>
-              <div className="min-h-24 bg-sky-50 border-sky-400 border-2 px-2 rounded-lg relative">
-                <h4 className="text-sky-500 font-medium">Prioritet</h4>
-                <h5 className="text-sky-500 font-medium">{issue?.priority?.priorityName}</h5>
-              </div>
-              <div className="min-h-24 bg-sky-50 border-sky-400 border-2 px-2 rounded-lg relative">
-                <h4 className="text-sky-500 font-medium">Status</h4>
-                <h5 className="text-sky-500 font-medium">{issue?.status?.statusName + " >> " + issue?.respRole?.roleName}</h5>
-              </div>
+              <StatusCard title="Proizvod" desc={issue?.product?.productName} />
+              <StatusCard title="Tip" desc={issue?.type?.typeName} />
+              <StatusCard title="Prioritet" desc={issue?.priority?.priorityName} />
+              <StatusCard title="Status" desc={`${issue?.status?.statusName} >> ${issue?.respRole?.roleName}`} />
             </div>
           </form>
-          <div className=" bg-zinc-200 border-zinc-400 border-2 px-2 rounded-lg mt-4 ">
-            <div className="min-h-12">
-              <p>Opis zahteva: {issue?.issueDesc}</p>
-            </div>
-            <div className="text-right">
-              <p>
-                {format(issue?.createdAt, "dd.MM.yyyy HH:mm ")} : {issue?.user?.firstName} {issue?.user?.lastName}
-              </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1">
-            {issue?.comments?.length > 0 ? (
-              issue?.comments?.map((comment) => (
-                <div key={`text-${comment?.commentId}`} className="bg-zinc-100 border-zinc-300 border-2 px-2 rounded-lg mt-4 grid grid-cols-2 lg:grid-cols-4 ">
-                  <div className="min-h-12 lg:col-span-3">
-                    <p>Komentar: {comment?.commentText}</p>
-                  </div>
-                  <div className="text-right">
-                    <p>Dokumenta</p>
-                    <p>
-                      {format(comment?.createdAt, "dd.MM.yyyy HH:mm")} : {comment?.user?.firstName} {comment?.user?.lastName}
-                    </p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className=" bg-zinc-100 border-zinc-300 border-2 px-2 rounded-lg mt-4 ">
-                <div className="min-h-12">
-                  <p>Josš uvek nema komentara...</p>
-                </div>
-              </div>
-            )}
-          </div>
+          <IssueCard issue={issue} />
+          <CommentCard comments={issue?.comments} />
           <div>
             <div className="flex justify-end py-4">
               <button type="button" className="button button-sky " aria-label="New User" onClick={() => setShowModalNewComment(true)}>
@@ -144,9 +101,7 @@ const Issue: React.FC = () => {
 
       {showSpinner && <Spinner />}
       {showModalNewComment && issue && <ModalNewComment setShowModalNewComment={setShowModalNewComment} fetchIssue={fetchIssue} issue={issue} />}
-      {showModalProcessIssue && issue && (
-        <ModalProcessIssue setShowModalProcessIssue={setShowModalProcessIssue} fetchIssue={fetchIssue} issue={issue} />
-      )}
+      {showModalProcessIssue && issue && <ModalProcessIssue setShowModalProcessIssue={setShowModalProcessIssue} fetchIssue={fetchIssue} issue={issue} />}
     </>
   );
 };

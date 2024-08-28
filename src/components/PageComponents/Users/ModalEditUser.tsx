@@ -4,8 +4,8 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import Spinner from "../../Spinner";
 import { toast } from "react-toastify";
 import type { AuthUser, UserRole } from "../../../types/types";
-import { handleApiError } from "../../../services/errorHandlers";
 import { AxiosInstance } from "axios";
+import useParams from "../../../hooks/useParams";
 
 const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetStateAction<boolean>>; fetchUsers: () => void; selectedUser: AuthUser }> = ({
   setShowModalEditUser,
@@ -16,23 +16,7 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const [editedUser, setEditedUser] = useState<AuthUser>(selectedUser);
-  const [allUserRoles, setAllUserRoles] = useState<UserRole[]>([]);
-
-  const fatchAllRoles: () => void = async () => {
-    try {
-      setShowSpinner(true);
-      const response: { data: UserRole[] } = await axiosPrivate.get("/api/userRoles");
-      setAllUserRoles(response?.data);
-    } catch (err: any) {
-      handleApiError(err);
-    } finally {
-      setShowSpinner(false);
-    }
-  };
-
-  useEffect(() => {
-    fatchAllRoles();
-  }, []);
+  const { allUserRoles } = useParams();
 
   const handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (e) => {
     setEditedUser({ ...editedUser, [e.target.id]: e.target.id === "roleId" ? parseInt(e.target.value) : e.target.value });
@@ -43,7 +27,7 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
     if (editedUserData.roles?.some((existingRole) => existingRole?.userRole?.roleId === role?.roleId)) {
       editedUserData.roles = editedUserData.roles?.filter((existingRole) => existingRole?.userRole?.roleId !== role?.roleId);
     } else {
-      editedUserData.roles?.push({userRole: role});
+      editedUserData.roles?.push({ userRole: role });
     }
     setEditedUser(editedUserData);
   };

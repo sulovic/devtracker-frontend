@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigateFunction, Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import type { AuthContextType } from "../types/types";
 

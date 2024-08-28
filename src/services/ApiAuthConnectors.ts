@@ -1,6 +1,6 @@
 import axios from "axios";
 import { LoginData, AxiosLoginResponse } from "../types/types";
-import { handleApiError } from "../services/errorHandlers";
+import { handleApiError } from "./errorHandlers";
 
 const ApiLoginConnector: (data: LoginData) => Promise<AxiosLoginResponse | undefined> = async (data) => {
   const apiURL: string = `${import.meta.env.VITE_APP_API_BASE_URL}/login`;

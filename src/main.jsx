@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./Context/AuthContext";
+import { ParamsProvider } from "./Context/ParamsContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import App from "./App.jsx";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <AuthProvider>
-          <App />
+          <ParamsProvider>
+            <App />
+          </ParamsProvider>
         </AuthProvider>
       </GoogleOAuthProvider>
     </BrowserRouter>

@@ -5,7 +5,7 @@ import Spinner from "../components/Spinner";
 import ModalNewIssue from "../components/PageComponents/Issues/ModalNewIssue";
 import { Issue, AuthContextType } from "../types/types";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useAuth } from "../Context/AuthContext";
+import useAuth from "../hooks/useAuth";
 import { AxiosInstance } from "axios";
 import { handleApiError } from "../services/errorHandlers";
 import { format } from "date-fns";

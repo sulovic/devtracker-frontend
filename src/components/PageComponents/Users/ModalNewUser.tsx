@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { AxiosInstance } from "axios";
 import type { AuthUser, UserRole } from "../../../types/types";
 import { handleApiError } from "../../../services/errorHandlers";
+import useParams from "../../../hooks/useParams";
 
 const ModalNewUser: React.FC<{ setShowModalNewUser: React.Dispatch<React.SetStateAction<boolean>>; fetchUsers: () => void }> = ({
   setShowModalNewUser,
@@ -13,31 +14,14 @@ const ModalNewUser: React.FC<{ setShowModalNewUser: React.Dispatch<React.SetStat
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
-  const [allUserRoles, setAllUserRoles] = useState<UserRole[]>([]);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
+  const { allUserRoles } = useParams();
   const [newUser, setNewUser] = useState<AuthUser>({
     firstName: "",
     lastName: "",
     email: "",
     roles: [],
   });
-
-  const fatchAllRoles: () => void = async () => {
-    try {
-      setShowSpinner(true);
-      const response: { data: UserRole[] } = await axiosPrivate.get("/api/userRoles");
-      setAllUserRoles(response?.data);
-      console.log(response?.data);
-    } catch (err: any) {
-      handleApiError(err);
-    } finally {
-      setShowSpinner(false);
-    }
-  };
-
-  useEffect(() => {
-    fatchAllRoles();
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewUser({ ...newUser, [e.target.id]: e.target.id === "roleId" ? parseInt(e.target.value) : e.target.value });
@@ -53,7 +37,7 @@ const ModalNewUser: React.FC<{ setShowModalNewUser: React.Dispatch<React.SetStat
     if (editedUser.roles?.some((existingRole) => existingRole?.userRole?.roleId === role?.roleId)) {
       editedUser.roles = editedUser.roles?.filter((existingRole) => existingRole?.userRole?.roleId !== role?.roleId);
     } else {
-      editedUser.roles?.push({userRole: role});
+      editedUser.roles?.push({ userRole: role });
     }
     setNewUser(editedUser);
   };

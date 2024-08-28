@@ -30,6 +30,14 @@ export type AuthContextType = {
   handleRefreshToken: () => Promise<string | undefined>;
 };
 
+export type ParamsContextType = {
+  allProducts: Product[];
+  allPriorities: Priority[];
+  allTypes: Type[];
+  allStatuses: Status[];
+  allUserRoles: UserRole[];
+};
+
 export type AxiosLoginResponse = {
   data: { accessToken: string };
 };

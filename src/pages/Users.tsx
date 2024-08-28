@@ -4,7 +4,7 @@ import { DashboardLinks } from "../config/config";
 import Spinner from "../components/Spinner";
 import Modal from "../components/Modal";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useAuth } from "../Context/AuthContext";
+import useAuth from "../hooks/useAuth";
 import ModalNewUser from "../components/PageComponents/Users/ModalNewUser";
 import ModalEditUser from "../components/PageComponents/Users/ModalEditUser";
 import { toast } from "react-toastify";
@@ -21,8 +21,8 @@ const Users: React.FC = () => {
   const [showModalDeleteUser, setShowModalDeleteUser] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const { authUser }: AuthContextType = useAuth();
-  
-  console.log(authUser)
+
+  console.log(authUser);
 
   const fetchUsers: () => void = async () => {
     setShowSpinner(true);

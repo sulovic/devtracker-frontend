@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Location, useLocation } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext.jsx";
+import useAuth from "../hooks/useAuth";
 import UserMenu from "./UserMenu";
 import { NavbarLinks } from "../types/types.js";
 import type { AuthContextType } from "../types/types.js";

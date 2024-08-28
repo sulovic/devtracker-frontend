@@ -1,19 +1,19 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
-import { ApiLoginConnector, ApiLogoutConnector, ApiRefreshConnector } from "../components/ApiAuthConnectors";
+import { ApiLoginConnector, ApiLogoutConnector, ApiRefreshConnector } from "../services/ApiAuthConnectors";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-import type { AuthUser, AuthContextType, LoginData, AxiosLoginResponse } from "../types/types";
+import type { AuthUser, AuthContextType, AxiosLoginResponse } from "../types/types";
 import { handleApiError } from "../services/errorHandlers";
 import { useNavigate } from "react-router-dom";
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext: React.Context<AuthContextType | null> = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleLogin : AuthContextType["handleLogin"]   = async ({ type, email, password, credential }) => {
+  const handleLogin: AuthContextType["handleLogin"] = async ({ type, email, password, credential }) => {
     // User / password login
     if (type === "password") {
       try {
@@ -24,7 +24,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           setAuthUser(decodedAccessToken);
           setAccessToken(accessToken);
 
-          console.log(decodedAccessToken)
+          console.log(decodedAccessToken);
           toast.success(`Uspešno ste se prijavili`, {
             position: "top-center",
           });
@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const handleLogout : AuthContextType["handleLogout"] = async () => {
+  const handleLogout: AuthContextType["handleLogout"] = async () => {
     try {
       await ApiLogoutConnector();
       setAuthUser(null);
@@ -61,13 +61,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       toast.success(`Uspešno ste se odjavili`, {
         position: "top-center",
       });
-      
     } catch (error) {
       handleApiError(error);
     }
   };
 
-  const handleRefreshToken : AuthContextType["handleRefreshToken"]  = async () => {
+  const handleRefreshToken: AuthContextType["handleRefreshToken"] = async () => {
     try {
       const refreshTokenResponse: AxiosLoginResponse | undefined = await ApiRefreshConnector();
 
@@ -88,15 +87,4 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       {children}
     </AuthContext.Provider>
   );
-};
-
-  export const useAuth : () => AuthContextType = () => {
-  const context = useContext(AuthContext);
-  if (context !== undefined) {
-    return context;
-  } else
-    toast.error(`Ups! Došlo je do greške .`, {
-      position: "top-center",
-    });
-  return {} as AuthContextType;
 };

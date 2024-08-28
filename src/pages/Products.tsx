@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Spinner from "../components/Spinner";
 import Modal from "../components/Modal";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useAuth } from "../Context/AuthContext";
+import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import { DashboardLinks } from "../config/config";
 import ModalNewProduct from "../components/PageComponents/Products/ModalNewProduct";
@@ -19,8 +19,8 @@ const Products: React.FC = () => {
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const axiosPrivate = useAxiosPrivate();
-  const { authUser } : AuthContextType = useAuth();
-  const tableHeaders : string[] = ["Proizvod", "Izmeni", "Obriši"];
+  const { authUser }: AuthContextType = useAuth();
+  const tableHeaders: string[] = ["Proizvod", "Izmeni", "Obriši"];
 
   const fetchProducts: () => void = async () => {
     try {
@@ -113,7 +113,7 @@ const Products: React.FC = () => {
                                 type="button"
                                 className="button button-red"
                                 aria-label="Delete"
-                                disabled={!authUser?.roles.some((role) => role?.roleId > 5000)}
+                                disabled={!authUser?.roles.some((role) => role?.userRole?.roleId > 5000)}
                                 onClick={() => handleDelete(product)}
                               >
                                 Obriši

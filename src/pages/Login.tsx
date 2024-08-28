@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { toast } from "react-toastify";
-import { useAuth } from "../Context/AuthContext";
+import useAuth from "../hooks/useAuth";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import type { LoginData, AuthUser } from "../types/types";
 

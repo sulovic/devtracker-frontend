@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, Location, NavigateFunction, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+import useAuth from "../hooks/useAuth";
 import Modal from "./Modal";
 import { NavbarLinks } from "../types/types";
 import { AuthContextType } from "../types/types";

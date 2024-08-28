@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import axios, { AxiosInstance } from "axios";
-import { useAuth } from "../Context/AuthContext";
+import useAuth from "../hooks/useAuth";
 import type { AuthContextType } from "../types/types";
 
 const axiosPrivate = axios.create({
