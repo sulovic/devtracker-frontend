@@ -53,6 +53,13 @@ export type NavbarLinks = {
   href: string;
   desc: string;
   minRole: number;
+  sublinks: {
+    label: string;
+    image: string;
+    href: string;
+    desc: string;
+    minRole: number;
+  }[];
 };
 
 export type ModalProps = {

@@ -73,15 +73,30 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
             {Links.map(
               (link, index) =>
                 authUser?.roles.some((role) => role?.userRole?.roleId > link?.minRole) && (
-                  <li
-                    className={`block px-4 py-2 font-medium no-underline ${
-                      currentLocation.pathname === link?.href ? `text-gray-500` : `text-gray-600`
-                    }  text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-white`}
-                    key={index}
-                    onClick={toggleMenuHidden}
-                  >
-                    <Link to={link?.href}>{link?.label}</Link>
-                  </li>
+                  <>
+                    <li
+                      className={`block px-4 py-2 font-medium no-underline ${
+                        currentLocation.pathname === link?.href ? `text-gray-500` : `text-gray-600`
+                      }  text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-white`}
+                      key={index}
+                      onClick={toggleMenuHidden}
+                    >
+                      <Link to={link?.href}>{link?.label}</Link>
+                    </li>
+                    {link?.sublinks.length > 0 &&
+                      link.sublinks.map((sublink, index) => (
+                        <li
+                          key={index}
+                          className={`block px-6 py-1 font-medium no-underline ${
+                            currentLocation.pathname === link?.href ? `text-gray-500` : `text-gray-600`
+                          }  text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-white`}
+                        >
+                          <Link to={sublink?.href}>
+                            {sublink?.label} {"<"}
+                          </Link>
+                        </li>
+                      ))}
+                  </>
                 )
             )}
             <div className="my-1 h-0.5 w-full bg-zinc-200"></div>

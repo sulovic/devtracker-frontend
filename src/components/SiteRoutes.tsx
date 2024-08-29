@@ -22,11 +22,11 @@ const SiteRoutes: React.FC = () => {
         <Route element={<ProtectRoute minRole={Priviledges["/issue"]} />}>
           <Route path="issue/:id" element={<Issue />} />
         </Route>
-        <Route element={<ProtectRoute minRole={Priviledges["/products"]} />}>
-          <Route path="products" element={<Products />} />
+        <Route element={<ProtectRoute minRole={Priviledges["/admin/products"]} />}>
+          <Route path="admin/products" element={<Products />} />
         </Route>
-        <Route element={<ProtectRoute minRole={Priviledges["/users"]} />}>
-          <Route path="users" element={<Users />} />
+        <Route element={<ProtectRoute minRole={Priviledges["/admin/users"]} />}>
+          <Route path="admin/users" element={<Users />} />
         </Route>
       </Route>
       <Route path="*" element={<Page404 />} />

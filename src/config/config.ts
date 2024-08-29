@@ -11,9 +11,10 @@ export const allowedExtensions = ".jpg, .jpeg, .png, .gif";
 export const Priviledges = {
   //SalesAppAdmin
   "/dashboard": 1000,
-  "/products": 1000,
-  "/users": 5000,
   "/issue": 1000,
+  "/admin": 5000,
+  "/admin/products": 5000,
+  "/admin/users": 5000,
 };
 
 export const DashboardLinks : NavbarLinks[] = [
@@ -23,19 +24,31 @@ export const DashboardLinks : NavbarLinks[] = [
     desc: "Dashboard",
     href: "/dashboard",
     minRole: Priviledges["/dashboard"],
+    sublinks: [],
   },
   {
-    label: "Products",
+    label: "Admin",
     image: "",
-    desc: "Products",
-    href: "/products",
-    minRole: Priviledges["/products"],
+    desc: "Admin",
+    href: "#",
+    minRole: Priviledges["/admin"],
+    sublinks: [
+      {
+        label: "Products",
+        image: "",
+        desc: "Products",
+        href: "/admin/products",
+        minRole: Priviledges["/admin/products"],
+      },
+      {
+        label: "Users",
+        image: "",
+        desc: "Users",
+        href: "/admin/users",
+        minRole: Priviledges["/admin/users"],
+      },
+    ],
+
   },
-  {
-    label: "Users",
-    image: "",
-    desc: "Users",
-    href: "/users",
-    minRole: Priviledges["/users"],
-  },
+
 ];

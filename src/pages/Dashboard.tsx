@@ -23,8 +23,9 @@ const Dashboard: React.FC = () => {
     setShowSpinner(true);
     try {
       //Implement response according to user role
-      const response: { data: Issue[] } = await axiosPrivate.get("/api/issues");
+      const response: { data: Issue[] } = await axiosPrivate.get(`/api/issues?userId=${authUser?.userId}&respRoleId=${authUser?.roles.map(role => role.userRole.roleId)}`);
       setIssuesData(response?.data);
+      console.log(response?.data);
     } catch (err: any) {
       handleApiError(err);
     } finally {
@@ -79,7 +80,7 @@ const Dashboard: React.FC = () => {
                       <td key={`issuePriority_${index}`}>{issue?.priority?.priorityName}</td>
                     </tr>
                   ))
-                ) : (
+                ) : !showSpinner && (
                   <tr>
                     <td colSpan={6} className="p-3">
                       Nema podataka o zahtevima...
