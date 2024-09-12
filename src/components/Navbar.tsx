@@ -10,7 +10,6 @@ const DropDown: React.FC<{ link: NavbarLinks; index: number }> = ({ link, index 
   const currentLocation: Location = useLocation();
   const menuRef = useRef<HTMLDivElement>(null);
 
-
   const handleClickOutside = (e: any) => {
     if (menuRef.current && !menuRef.current.contains(e.target)) {
       setIsOpen(false);
@@ -26,23 +25,23 @@ const DropDown: React.FC<{ link: NavbarLinks; index: number }> = ({ link, index 
 
   return (
     <>
-      <li onClick={() => setIsOpen(!isOpen)} className="mt-3 text-end	text-lg font-medium lg:!mt-0 lg:inline-block relative" key={index}>
+      <li onClick={() => setIsOpen(!isOpen)} className="mt-3 min-w-24 text-end	text-lg font-medium lg:!mt-0 lg:inline-block relative" key={`mainlink-${index}`}>
         <Link className={`mr-4 no-underline ${currentLocation.pathname === link?.href ? `text-sky-200` : `text-sky-100`} hover:text-white`} to={link?.href}>
           {link?.label}
           {link?.sublinks.length > 0 && <span className="inline-block pl-1">▼</span>}
         </Link>
         {isOpen && (
           <div ref={menuRef} className="absolute right-0 font-medium px-4 pt-2 mt-4 min-w-40 shadow-lg bg-sky-400 ring-1 ring-sky-200 ring-opacity-20">
-            <li className="pb-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-              {link?.sublinks.map((sublink, index) => (
+            {link?.sublinks.map((sublink, subIndex) => (
+              <li key={`navbar-${index}-${subIndex}`} className="pb-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                 <Link
                   className={` block no-underline ${currentLocation.pathname === sublink?.href ? `text-sky-200` : `text-sky-100`} hover:text-white`}
                   to={sublink?.href}
                 >
                   {sublink?.label}
                 </Link>
-              ))}
-            </li>
+              </li>
+            ))}
           </div>
         )}
       </li>
@@ -69,7 +68,7 @@ const Navbar: React.FC<{ Links?: NavbarLinks[] }> = ({ Links = [] }) => {
               (link, index) =>
                 authUser?.roles.some((role) => role?.userRole?.roleId > link?.minRole) &&
                 (link.sublinks.length === 0 ? (
-                  <li className="mt-3 text-end	text-lg font-medium lg:!mt-0 lg:inline-block" key={index}>
+                  <li className="mt-3 text-end	text-lg font-medium lg:!mt-0 lg:inline-block" key={`navbar-${index}`}>
                     <Link
                       className={`mr-4 no-underline ${currentLocation.pathname === link?.href ? `text-sky-200` : `text-sky-100`} hover:text-white`}
                       to={link?.href}
@@ -78,7 +77,9 @@ const Navbar: React.FC<{ Links?: NavbarLinks[] }> = ({ Links = [] }) => {
                     </Link>
                   </li>
                 ) : (
+                  <React.Fragment key={`navbar-fragment-${index}`}>
                   <DropDown link={link} index={index} />
+                  </React.Fragment>
                 ))
             )}
           </ul>

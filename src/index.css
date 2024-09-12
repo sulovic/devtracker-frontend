@@ -4,7 +4,7 @@
 
 @layer components {
   .button {
-    @apply min-w-24 rounded-md px-4 py-2 font-medium text-gray-600 border-2 border-gray-600 shadow-sm;
+    @apply min-w-24 rounded-sm px-2 py-1 font-medium text-gray-600 border-2 border-gray-600 shadow-sm;
   }
   .button:hover {
     @apply opacity-80;
@@ -54,7 +54,7 @@ h3 {
 }
 
 h4 {
-  @apply py-2 text-xl font-bold text-gray-600 dark:text-gray-50;
+  @apply py-1 text-xl font-bold text-gray-600 dark:text-gray-50;
 }
 
 h5 {
@@ -123,4 +123,11 @@ input[type="checkbox"]:checked::before {
 
 input[type="checkbox"]:hover {
   border-color: #999;
+}
+
+select {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  min-width: 9rem;
+  width: auto;
 }

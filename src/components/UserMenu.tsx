@@ -67,26 +67,28 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
             className="mb-0 flex w-full flex-col justify-end px-0 py-2 text-end text-base font-medium text-gray-600 dark:text-gray-200 "
             aria-labelledby="dropdownMenu"
           >
-            <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{authUser?.firstName + " " + authUser?.lastName}</li>
+            <li key={`userMenu-user`} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+              {authUser?.firstName + " " + authUser?.lastName}
+            </li>
             <div className="my-1 h-0.5 w-full bg-zinc-200"></div>
 
             {Links.map(
               (link, index) =>
                 authUser?.roles.some((role) => role?.userRole?.roleId > link?.minRole) && (
-                  <>
+                  <React.Fragment key={`fragment-${index}`}>
                     <li
                       className={`block px-4 py-2 font-medium no-underline ${
                         currentLocation.pathname === link?.href ? `text-gray-500` : `text-gray-600`
                       }  text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-white`}
-                      key={index}
+                      key={`userMenu-${index}`}
                       onClick={toggleMenuHidden}
                     >
                       <Link to={link?.href}>{link?.label}</Link>
                     </li>
                     {link?.sublinks.length > 0 &&
-                      link.sublinks.map((sublink, index) => (
+                      link.sublinks.map((sublink, subIndex) => (
                         <li
-                          key={index}
+                          key={`userMenu-${index}-${subIndex}`}
                           className={`block px-6 py-1 font-medium no-underline ${
                             currentLocation.pathname === link?.href ? `text-gray-500` : `text-gray-600`
                           }  text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-white`}
@@ -96,12 +98,12 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
                           </Link>
                         </li>
                       ))}
-                  </>
+                  </React.Fragment>
                 )
             )}
             <div className="my-1 h-0.5 w-full bg-zinc-200"></div>
 
-            <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+            <li key={`userMenu-logout`} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
               <button className="float-end" onClick={() => setShowLogoutModal(true)}>
                 Logout
               </button>

@@ -42,6 +42,14 @@ export type AxiosLoginResponse = {
   data: { accessToken: string };
 };
 
+export type FiltersType = {
+  product?: Product | undefined;
+  priority?: Priority | undefined;
+  type?: Type | undefined;
+  status?: Status | undefined;
+  userRole?: UserRole | undefined;
+};
+
 export type Product = {
   productId?: number;
   productName: string;
@@ -124,3 +132,9 @@ export type Documents = {
 };
 
 export type SelectorProperties = "product" | "type" | "status" | "priority";
+
+export type PaginationType = {
+  limit: 10 | 25 | 50 | 100;
+  page: number;
+  count: number;
+};

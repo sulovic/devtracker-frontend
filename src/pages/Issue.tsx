@@ -8,8 +8,8 @@ import { handleApiError } from "../services/errorHandlers";
 import Spinner from "../components/Spinner";
 import { AxiosInstance } from "axios";
 import ModalNewComment from "../components/PageComponents/Issues/ModalNewComment";
-import Forward from "../components/PageComponents/Icons/Forward";
-import Backward from "../components/PageComponents/Icons/Backward";
+import Forward from "../components/Icons/Forward";
+import Backward from "../components/Icons/Backward";
 import useAuth from "../hooks/useAuth";
 import ModalProcessIssue from "../components/PageComponents/Issues/ModalProcessIssue";
 import StatusCard from "../components/PageComponents/Issues/StatusCard";
@@ -63,17 +63,17 @@ const Issue: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 pb-4">
               <button
                 onClick={() => navigate(`/dashboard`)}
-                className=" flex items-center justify-center gap-2 text-center bg-sky-100 border-sky-500 border-2  rounded-lg"
+                className=" flex items-center justify-center gap-2 text-center bg-sky-50 border-sky-400 border-2  rounded-lg"
               >
                 <Backward IconClick={() => {}} />
                 <h3>Nazad</h3>
               </button>
-              <div className=" text-center lg:col-span-2  bg-sky-100 border-sky-500 border-2 rounded-lg">
+              <div className=" text-center lg:col-span-2  bg-sky-50 border-sky-400 border-2 rounded-lg">
                 <h3>{issue?.issueName}</h3>
               </div>
               <button
                 type="submit"
-                className=" flex items-center justify-center gap-2 text-center bg-sky-100 border-sky-500 border-2 rounded-lg"
+                className=" flex items-center justify-center gap-2 text-center bg-sky-50 border-sky-400 border-2 rounded-lg"
                 disabled={authUser ? !authUser?.roles.some((role) => role?.userRole?.roleId === issue?.respRole?.roleId) : true}
               >
                 <h3>Obradi</h3>
