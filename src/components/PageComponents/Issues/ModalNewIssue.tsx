@@ -67,7 +67,7 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75">
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <form className="flex min-h-full items-center justify-center p-4 text-center" onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
-              <div className="relative p-4 transform w-full max-w-3xl overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl sm:p-8">
+              <div className="relative p-4 transform w-full max-w-4xl overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl sm:p-8">
                 <div className="w-full sm:mt-0 py-4">
                   {/* Modal Head */}
                   <div className="text-left">

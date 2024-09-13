@@ -8,6 +8,7 @@ import { handleApiError } from "../../../services/errorHandlers";
 import { toast } from "react-toastify";
 import { nextStatus, nextRespRole } from "../../../services/processMatrix";
 import useParams from "../../../hooks/useParams";
+import { useNavigate } from "react-router-dom";
 
 const ModalProcessIssue: React.FC<{
   issue: Issue;
@@ -21,6 +22,7 @@ const ModalProcessIssue: React.FC<{
   const [editedIssue, setEditedIssue] = useState<Issue>(issue);
   const { allProducts, allPriorities, allTypes } = useParams();
   const nextStatuses: Status[] = nextStatus(issue?.status?.statusId);
+  const navigate = useNavigate();
 
   useEffect(() => {}, [nextRespRoles]);
 
@@ -44,7 +46,7 @@ const ModalProcessIssue: React.FC<{
       setShowSpinner(false);
       setShowModal(false);
       setShowModalProcessIssue(false);
-      fetchIssue();
+      navigate(-1);
     }
   };
 

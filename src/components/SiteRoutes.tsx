@@ -9,7 +9,10 @@ import Users from "../pages/Users";
 import { Priviledges } from "../config/config";
 import Products from "../pages/Products";
 import Issue from "../pages/Issue";
-
+import MyIssues from "../pages/MyIssues";
+import Triage from "../pages/Triage";
+import Resolve from "../pages/Resolve";
+import AllIssues from "../pages/AllIssues";
 
 const SiteRoutes: React.FC = () => {
   return (
@@ -19,8 +22,20 @@ const SiteRoutes: React.FC = () => {
         <Route element={<ProtectRoute minRole={Priviledges["/dashboard"]} />}>
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
+        <Route element={<ProtectRoute minRole={Priviledges["/my-issues"]} />}>
+          <Route path="my-issues" element={<MyIssues />} />
+        </Route>
+        <Route element={<ProtectRoute minRole={Priviledges["/triage"]} />}>
+          <Route path="triage" element={<Triage />} />
+        </Route>
+        <Route element={<ProtectRoute minRole={Priviledges["/resolve"]} />}>
+          <Route path="resolve" element={<Resolve />} />
+        </Route>
         <Route element={<ProtectRoute minRole={Priviledges["/issue"]} />}>
           <Route path="issue/:id" element={<Issue />} />
+        </Route>
+        <Route element={<ProtectRoute minRole={Priviledges["/admin/all-issues"]} />}>
+          <Route path="admin/all-issues" element={<AllIssues />} />
         </Route>
         <Route element={<ProtectRoute minRole={Priviledges["/admin/products"]} />}>
           <Route path="admin/products" element={<Products />} />

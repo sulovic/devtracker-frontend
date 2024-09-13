@@ -10,7 +10,6 @@ const Filters: React.FC<{
   setPagination: React.Dispatch<React.SetStateAction<PaginationType>>;
 }> = ({ filters, setFilters, pagination, setPagination }) => {
   const { allProducts, allPriorities, allTypes, allStatuses } = useParams();
-  const {authUser} = useAuth();
 
   useEffect(() => {
     setPagination({ ...pagination, page: 1 });
@@ -75,21 +74,6 @@ const Filters: React.FC<{
         {allStatuses?.map((status) => (
           <option key={status?.statusId} value={status?.statusName}>
             {status?.statusName}
-          </option>
-        ))}
-      </select>
-      {/* userRole filter */}
-      <select
-        name="userRole"
-        value={filters?.userRole?.roleName}
-        onChange={(e) => {
-          setFilters({ ...filters, userRole: authUser?.roles.map((role) => role?.userRole).find((role) => role?.roleName === e.target.value) });
-        }}
-      >
-        <option value="">Sve uloge</option>
-        {authUser?.roles.map((role) => (
-          <option key={role?.userRole?.roleId} value={role?.userRole?.roleName}>
-            {role?.userRole?.roleName}
           </option>
         ))}
       </select>

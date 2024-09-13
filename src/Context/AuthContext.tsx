@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import React, { createContext, useState, ReactNode } from "react";
 import { ApiLoginConnector, ApiLogoutConnector, ApiRefreshConnector } from "../services/ApiAuthConnectors";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";

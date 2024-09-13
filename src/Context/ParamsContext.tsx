@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { Product, Priority, Type, Status, UserRole, ParamsContextType, AuthContextType } from "../types/types";
 import Spinner from "../components/Spinner";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";

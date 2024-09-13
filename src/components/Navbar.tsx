@@ -32,16 +32,18 @@ const DropDown: React.FC<{ link: NavbarLinks; index: number }> = ({ link, index 
         </Link>
         {isOpen && (
           <div ref={menuRef} className="absolute right-0 font-medium px-4 pt-2 mt-4 min-w-40 shadow-lg bg-sky-400 ring-1 ring-sky-200 ring-opacity-20">
-            {link?.sublinks.map((sublink, subIndex) => (
-              <li key={`navbar-${index}-${subIndex}`} className="pb-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <Link
-                  className={` block no-underline ${currentLocation.pathname === sublink?.href ? `text-sky-200` : `text-sky-100`} hover:text-white`}
-                  to={sublink?.href}
-                >
-                  {sublink?.label}
-                </Link>
-              </li>
-            ))}
+            <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+              {link?.sublinks.map((sublink, subIndex) => (
+                <li key={`navbar-${index}-${subIndex}`} className="pb-2" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                  <Link
+                    className={` block no-underline ${currentLocation.pathname === sublink?.href ? `text-sky-200` : `text-sky-100`} hover:text-white`}
+                    to={sublink?.href}
+                  >
+                    {sublink?.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </li>
@@ -78,7 +80,7 @@ const Navbar: React.FC<{ Links?: NavbarLinks[] }> = ({ Links = [] }) => {
                   </li>
                 ) : (
                   <React.Fragment key={`navbar-fragment-${index}`}>
-                  <DropDown link={link} index={index} />
+                    <DropDown link={link} index={index} />
                   </React.Fragment>
                 ))
             )}

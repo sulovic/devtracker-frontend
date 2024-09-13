@@ -47,7 +47,6 @@ export type FiltersType = {
   priority?: Priority | undefined;
   type?: Type | undefined;
   status?: Status | undefined;
-  userRole?: UserRole | undefined;
 };
 
 export type Product = {
@@ -132,6 +131,8 @@ export type Documents = {
 };
 
 export type SelectorProperties = "product" | "type" | "status" | "priority";
+
+export type ApiPageParams = "MyIssues" | "Triage" | "Resolve" | "Admin";
 
 export type PaginationType = {
   limit: 10 | 25 | 50 | 100;

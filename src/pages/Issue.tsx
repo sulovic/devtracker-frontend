@@ -61,24 +61,21 @@ const Issue: React.FC = () => {
               Pregled zahteva {issue?.type?.typeName}-{issue?.issueId}
             </h3>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 pb-4">
-              <button
-                onClick={() => navigate(`/dashboard`)}
-                className=" flex items-center justify-center gap-2 text-center bg-sky-50 border-sky-400 border-2  rounded-lg"
-              >
-                <Backward IconClick={() => {}} />
-                <h3>Nazad</h3>
-              </button>
+              <div className=" flex items-center justify-center gap-2 text-center bg-sky-50 border-sky-400 border-2  rounded-lg">
+                <button type="button" onClick={() => navigate(-1)}>
+                  <Backward IconClick={() => {}} />
+                </button>
+              </div>
               <div className=" text-center lg:col-span-2  bg-sky-50 border-sky-400 border-2 rounded-lg">
                 <h3>{issue?.issueName}</h3>
               </div>
-              <button
-                type="submit"
-                className=" flex items-center justify-center gap-2 text-center bg-sky-50 border-sky-400 border-2 rounded-lg"
-                disabled={authUser ? !authUser?.roles.some((role) => role?.userRole?.roleId === issue?.respRole?.roleId) : true}
-              >
-                <h3>Obradi</h3>
-                <Forward IconClick={() => {}} />
-              </button>
+              <div className=" flex items-center justify-center gap-2 text-center bg-sky-50 border-sky-400 border-2  rounded-lg">
+                {authUser && authUser?.roles.some((role) => role?.userRole?.roleId >= issue?.respRole?.roleId) && (
+                  <button type="submit">
+                    <Forward IconClick={() => {}} />
+                  </button>
+                )}
+              </div>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
               <StatusCard title="Proizvod" desc={issue?.product?.productName} />
