@@ -63,12 +63,9 @@ const ModalNewComment: React.FC<{ issue: Issue; setShowModalNewComment: React.Di
                 <div className="w-full sm:mt-0 py-4">
                   {/* Modal Head */}
                   <div className="text-left">
-                    <h4>Dodavanje novog komentara</h4>
+                    <h4>Dodavanje komentara</h4>
                     <div className="my-4 w-full h-0.5 bg-zinc-400"></div>
                     {/* Modal Body */}
-                    <div className="my-2">
-                      <h5>Zahtev: {issue?.issueName}</h5>
-                    </div>
                     <div className="grid grid-cols-1">
                       <div>
                         <label htmlFor="issueDesc">Novi komentar</label>

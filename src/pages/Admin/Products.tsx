@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import Spinner from "../components/Spinner";
-import Modal from "../components/Modal";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import useAuth from "../hooks/useAuth";
+import Navbar from "../../components/Navbar";
+import Spinner from "../../components/Spinner";
+import Modal from "../../components/Modal";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
-import { DashboardLinks } from "../config/config";
-import ModalNewProduct from "../components/PageComponents/Products/ModalNewProduct";
-import ModalEditProduct from "../components/PageComponents/Products/ModalEditProduct";
-import type { AuthContextType, Product } from "../types/types";
-import { handleApiError } from "../services/errorHandlers";
+import { DashboardLinks } from "../../config/config";
+import ModalNewProduct from "../../components/PageComponents/Products/ModalNewProduct";
+import ModalEditProduct from "../../components/PageComponents/Products/ModalEditProduct";
+import type { AuthContextType, Product } from "../../types/types";
+import { handleApiError } from "../../services/errorHandlers";
 
 const Products: React.FC = () => {
   const [productsData, setProductsData] = useState<Product[]>([]);

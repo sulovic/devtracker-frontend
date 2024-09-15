@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FiltersType, PaginationType } from "../types/types";
 import useParams from "../hooks/useParams";
-import useAuth from "../hooks/useAuth";
+import { useLocation } from "react-router-dom";
 
 const Filters: React.FC<{
   filters: FiltersType | undefined;
@@ -10,6 +10,8 @@ const Filters: React.FC<{
   setPagination: React.Dispatch<React.SetStateAction<PaginationType>>;
 }> = ({ filters, setFilters, pagination, setPagination }) => {
   const { allProducts, allPriorities, allTypes, allStatuses } = useParams();
+  const { pathname } = useLocation();
+
 
   useEffect(() => {
     setPagination({ ...pagination, page: 1 });
@@ -63,20 +65,20 @@ const Filters: React.FC<{
         ))}
       </select>
       {/* Status filter */}
-      <select
+      {(pathname === "/my-issues" || pathname === "/admin/all-issues") && (<select
         name="status"
         value={filters?.status?.statusName}
         onChange={(e) => {
           setFilters({ ...filters, status: allStatuses?.find((status) => status?.statusName === e.target.value) });
         }}
       >
-        <option value="">Svi statusi</option>
+        <option value="">Aktivni statusi</option>
         {allStatuses?.map((status) => (
           <option key={status?.statusId} value={status?.statusName}>
             {status?.statusName}
           </option>
         ))}
-      </select>
+      </select>)}
     </div>
   );
 };

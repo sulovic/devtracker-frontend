@@ -60,13 +60,13 @@ const ModalProcessIssue: React.FC<{
                 <div className="w-full sm:mt-0 py-4">
                   {/* Modal Head */}
                   <div className="text-left">
-                    <h4>Obrada postojećeg zahteva</h4>
+                    <h4>Obrada zahteva: {editedIssue?.issueName} </h4>
                     <div className="my-4 w-full h-0.5 bg-zinc-400"></div>
                     {/* Modal Body */}
                     <div className="my-2">
                       <h5>Podaci o zahtevu:</h5>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <div>
                         <label htmlFor="product">Proizvod</label>
                         <select

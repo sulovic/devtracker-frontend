@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import { DashboardLinks } from "../config/config";
-import ModalNewIssue from "../components/PageComponents/Issues/ModalNewIssue";
-import { Issue, AuthContextType, FiltersType, PaginationType, ApiPageParams } from "../types/types";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import useAuth from "../hooks/useAuth";
+import Navbar from "../../components/Navbar";
+import { DashboardLinks } from "../../config/config";
+import ModalNewIssue from "../../components/PageComponents/Issues/ModalNewIssue";
+import { Issue, AuthContextType, FiltersType, PaginationType, ApiPageParams } from "../../types/types";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAuth from "../../hooks/useAuth";
 import { AxiosInstance } from "axios";
-import { handleApiError } from "../services/errorHandlers";
-import ApiParams from "../services/ApiParams";
-import IssuesTable from "../components/IssuesTable";
+import { handleApiError } from "../../services/errorHandlers";
+import ApiParams from "../../services/ApiParams";
+import IssuesTable from "../../components/IssuesTable";
 
 const AllIssues: React.FC = () => {
   const [showModalNewIssue, setShowModalNewIssue] = useState<boolean>(false);
@@ -27,7 +27,7 @@ const AllIssues: React.FC = () => {
 
       if (authUser) {
         const apiPageParams: ApiPageParams = "Admin"
-        apiParams = ApiParams(authUser, filters, pagination, apiPageParams);
+        apiParams = ApiParams({authUser, filters, pagination, apiPageParams});
       }
 
       const response: { data: { data: Issue[]; count: number } } = await axiosPrivate.get(`/api/issues${apiParams}`);

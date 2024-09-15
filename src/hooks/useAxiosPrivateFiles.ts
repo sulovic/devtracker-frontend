@@ -31,7 +31,7 @@ const useAxiosPrivateFiles : () => AxiosInstance = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
+        if (error?.response?.status === 401 && error?.response?.data?.error === "Unauthorized - Access Token Expired" && !prevRequest?.sent) {
           prevRequest.sent = true;
           try {
             const newAccessToken = await handleRefreshToken();

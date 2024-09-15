@@ -25,7 +25,7 @@ const Resolve: React.FC = () => {
 
       if (authUser) {
         const apiPageParams: ApiPageParams = "Resolve";
-        apiParams = ApiParams(authUser, filters, pagination, apiPageParams);
+        apiParams = ApiParams({authUser, filters, pagination, apiPageParams});
       }
 
       const response: { data: { data: Issue[]; count: number } } = await axiosPrivate.get(`/api/issues${apiParams}`);

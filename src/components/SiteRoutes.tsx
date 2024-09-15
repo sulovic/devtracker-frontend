@@ -7,12 +7,12 @@ import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Users from "../pages/Users";
 import { Priviledges } from "../config/config";
-import Products from "../pages/Products";
+import Products from "../pages/Admin/Products";
 import Issue from "../pages/Issue";
 import MyIssues from "../pages/MyIssues";
 import Triage from "../pages/Triage";
 import Resolve from "../pages/Resolve";
-import AllIssues from "../pages/AllIssues";
+import AllIssues from "../pages/Admin/AllIssues";
 
 const SiteRoutes: React.FC = () => {
   return (

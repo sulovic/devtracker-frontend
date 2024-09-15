@@ -61,15 +61,15 @@ const Issue: React.FC = () => {
               Pregled zahteva {issue?.type?.typeName}-{issue?.issueId}
             </h3>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 pb-4">
-              <div className=" flex items-center justify-center gap-2 text-center bg-sky-50 border-sky-400 border-2  rounded-lg">
+              <div className=" flex items-center justify-center gap-2 text-center bg-zinc-50 border-zinc-300 border-2  rounded-sm">
                 <button type="button" onClick={() => navigate(-1)}>
                   <Backward IconClick={() => {}} />
                 </button>
               </div>
-              <div className=" text-center lg:col-span-2  bg-sky-50 border-sky-400 border-2 rounded-lg">
-                <h3>{issue?.issueName}</h3>
+              <div className=" flex items-center justify-center lg:col-span-2 bg-zinc-100 border-zinc-300 border-2 rounded-sm">
+                <h4>{issue?.issueName}</h4>
               </div>
-              <div className=" flex items-center justify-center gap-2 text-center bg-sky-50 border-sky-400 border-2  rounded-lg">
+              <div className=" flex items-center justify-center gap-2 text-center bg-zinc-50 border-zinc-300 border-2  rounded-sm">
                 {authUser && authUser?.roles.some((role) => role?.userRole?.roleId >= issue?.respRole?.roleId) && (
                   <button type="submit">
                     <Forward IconClick={() => {}} />
@@ -85,7 +85,7 @@ const Issue: React.FC = () => {
             </div>
           </form>
           <IssueCard issue={issue} />
-          <CommentCard comments={issue?.comments} />
+          <CommentCard comments={issue?.comments} fetchIssue={fetchIssue} />
           <div>
             <div className="flex justify-end py-4">
               <button type="button" className="button button-sky " aria-label="New User" onClick={() => setShowModalNewComment(true)}>

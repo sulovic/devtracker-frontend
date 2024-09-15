@@ -9,6 +9,7 @@ import { AxiosInstance } from "axios";
 import { handleApiError } from "../services/errorHandlers";
 import ApiParams from "../services/ApiParams";
 import IssuesTable from "../components/IssuesTable";
+import useParams from "../hooks/useParams";
 
 const MyIssues: React.FC = () => {
   const [showModalNewIssue, setShowModalNewIssue] = useState<boolean>(false);
@@ -18,6 +19,7 @@ const MyIssues: React.FC = () => {
   const { authUser }: AuthContextType = useAuth();
   const [pagination, setPagination] = useState<PaginationType>({ page: 1, limit: 10, count: 0 });
   const [filters, setFilters] = useState<FiltersType | undefined>();
+  const { allStatuses } = useParams();
 
   const fetchIssues: () => void = async () => {
     setShowSpinner(true);
@@ -27,7 +29,7 @@ const MyIssues: React.FC = () => {
 
       if (authUser) {
         const apiPageParams: ApiPageParams = "MyIssues"
-        apiParams = ApiParams(authUser, filters, pagination, apiPageParams);
+        apiParams = ApiParams({authUser, filters, pagination, allStatuses, apiPageParams});
       }
 
       const response: { data: { data: Issue[]; count: number } } = await axiosPrivate.get(`/api/issues${apiParams}`);
