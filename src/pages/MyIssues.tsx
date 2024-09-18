@@ -28,8 +28,8 @@ const MyIssues: React.FC = () => {
       let apiParams: string = "";
 
       if (authUser) {
-        const apiPageParams: ApiPageParams = "MyIssues"
-        apiParams = ApiParams({authUser, filters, pagination, allStatuses, apiPageParams});
+        const apiPageParams: ApiPageParams = "MyIssues";
+        apiParams = ApiParams({ authUser, filters, pagination, allStatuses, apiPageParams });
       }
 
       const response: { data: { data: Issue[]; count: number } } = await axiosPrivate.get(`/api/issues${apiParams}`);
@@ -56,11 +56,13 @@ const MyIssues: React.FC = () => {
       <div className="mx-2 md:mx-4">
         <div className="flex px-3 mb-2">
           <h3>Moji zahtevi - Pregled unetih zahteva</h3>
-          <div className="flex flex-grow justify-end items-center">
-            <button type="button" className="button button-sky h-fit" aria-label="New Issue" onClick={() => setShowModalNewIssue(true)}>
-              Kreiraj zahtev
-            </button>
-          </div>
+          {authUser?.roles.some((role) => role?.userRole?.roleId === 1001) && (
+            <div className="flex flex-grow justify-end items-center">
+              <button type="button" className="button button-sky h-fit" aria-label="New Issue" onClick={() => setShowModalNewIssue(true)}>
+                Kreiraj zahtev
+              </button>
+            </div>
+          )}
         </div>
         <IssuesTable
           issuesData={issuesData}

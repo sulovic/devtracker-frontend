@@ -13,25 +13,24 @@ export const maxNoOfFiles = 5;
 export const maxFileSize = 10 * 1024 * 1024;
 
 export const Priviledges = {
-  //SalesAppAdmin
-  "/dashboard": 1000,
-  "/my-issues": 1000,
-  "/issue": 1000,
-  "/triage": 2000,
-  "/resolve": 3000,
-  "/admin": 5000,
-  "/admin/all-issues": 5000,
-  "/admin/products": 5000,
-  "/admin/users": 5000,
+  "/dashboard": [1001, 2001, 3101, 3201, 3301, 3401, 5001],
+  "/my-issues": [1001, 2001, 3101, 3201, 3301, 3401, 5001],
+  "/issue": [1001, 2001, 3101, 3201, 3301, 3401, 5001],
+  "/triage": [2001, 5001],
+  "/resolve": [3101, 3201, 3301, 3401, 5001],
+  "/admin": [5001],
+  "/admin/all-issues": [5001],
+  "/admin/products": [5001],
+  "/admin/users": [5001],
 };
 
-export const DashboardLinks : NavbarLinks[] = [
+export const DashboardLinks: NavbarLinks[] = [
   {
     label: "Dashboard",
     image: "",
     desc: "Dashboard",
     href: "/dashboard",
-    minRole: Priviledges["/dashboard"],
+    authRoles: Priviledges["/dashboard"],
     sublinks: [],
   },
   {
@@ -39,7 +38,7 @@ export const DashboardLinks : NavbarLinks[] = [
     image: "",
     desc: "My Issues",
     href: "/my-issues",
-    minRole: Priviledges["/my-issues"],
+    authRoles: Priviledges["/my-issues"],
     sublinks: [],
   },
   {
@@ -47,7 +46,7 @@ export const DashboardLinks : NavbarLinks[] = [
     image: "",
     desc: "Triage",
     href: "/triage",
-    minRole: Priviledges["/triage"],
+    authRoles: Priviledges["/triage"],
     sublinks: [],
   },
   {
@@ -55,7 +54,7 @@ export const DashboardLinks : NavbarLinks[] = [
     image: "",
     desc: "Resolve",
     href: "/resolve",
-    minRole: Priviledges["/resolve"],
+    authRoles: Priviledges["/resolve"],
     sublinks: [],
   },
   {
@@ -63,31 +62,29 @@ export const DashboardLinks : NavbarLinks[] = [
     image: "",
     desc: "Admin",
     href: "#",
-    minRole: Priviledges["/admin"],
+    authRoles: Priviledges["/admin"],
     sublinks: [
       {
         label: "All Issues",
         image: "",
         desc: "All Issues",
         href: "/admin/all-issues",
-        minRole: Priviledges["/admin/all-issues"],
+        authRoles: Priviledges["/admin/all-issues"],
       },
       {
         label: "Products",
         image: "",
         desc: "Products",
         href: "/admin/products",
-        minRole: Priviledges["/admin/products"],
+        authRoles: Priviledges["/admin/products"],
       },
       {
         label: "Users",
         image: "",
         desc: "Users",
         href: "/admin/users",
-        minRole: Priviledges["/admin/users"],
+        authRoles: Priviledges["/admin/users"],
       },
     ],
-
   },
-
 ];

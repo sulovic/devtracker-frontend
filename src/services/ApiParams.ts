@@ -52,6 +52,16 @@ const ApiParams = ({
       break;
 
     case "Admin":
+      if (allStatuses && filters?.status === undefined) {
+        let activeStatuses: number[] = [];
+        allStatuses.map((status) => {
+          if (status?.statusId && status?.statusName !== "Closed") {
+            activeStatuses.push(status?.statusId);
+          }
+        });
+        apiParams += `&statusId=${activeStatuses.join(",")}`;
+      }
+
       break;
   }
 

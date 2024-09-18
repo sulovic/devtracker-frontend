@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { DashboardLinks } from "../config/config";
-import Spinner from "../components/Spinner";
-import Modal from "../components/Modal";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import useAuth from "../hooks/useAuth";
-import ModalNewUser from "../components/PageComponents/Users/ModalNewUser";
-import ModalEditUser from "../components/PageComponents/Users/ModalEditUser";
+import Navbar from "../../components/Navbar";
+import { DashboardLinks } from "../../config/config";
+import Spinner from "../../components/Spinner";
+import Modal from "../../components/Modal";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAuth from "../../hooks/useAuth";
+import ModalNewUser from "../../components/PageComponents/Users/ModalNewUser";
+import ModalEditUser from "../../components/PageComponents/Users/ModalEditUser";
 import { toast } from "react-toastify";
-import { AuthUser, AuthContextType, UserRole } from "../types/types";
+import { AuthUser, AuthContextType, UserRole } from "../../types/types";
 import { AxiosInstance } from "axios";
-import { handleApiError } from "../services/errorHandlers";
+import { handleApiError } from "../../services/errorHandlers";
 
 const Users: React.FC = () => {
   const [usersData, setUsersData] = useState<AuthUser[]>([]);

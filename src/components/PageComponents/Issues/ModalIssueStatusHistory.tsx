@@ -8,9 +8,9 @@ const ModalIssueStatusHistory: React.FC<{ issue: Issue; setShowModalIssueStatusH
 }) => {
   return (
     <>
-      <div className="relative z-5">
+      <div className="relative z-20">
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75">
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <div className="relative p-4 transform w-full max-w-3xl overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl sm:p-8">
                 <div className="w-full sm:mt-0">

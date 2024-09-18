@@ -59,13 +59,13 @@ export type NavbarLinks = {
   image: string;
   href: string;
   desc: string;
-  minRole: number;
+  authRoles: number[];
   sublinks: {
     label: string;
     image: string;
     href: string;
     desc: string;
-    minRole: number;
+    authRoles: number[];
   }[];
 };
 

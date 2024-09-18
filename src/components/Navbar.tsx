@@ -25,7 +25,7 @@ const DropDown: React.FC<{ link: NavbarLinks; index: number }> = ({ link, index 
 
   return (
     <>
-      <li onClick={() => setIsOpen(!isOpen)} className="mt-3 min-w-24 text-end	text-lg font-medium lg:!mt-0 lg:inline-block relative" key={`mainlink-${index}`}>
+      <li onClick={() => setIsOpen(!isOpen)} className="mt-3 min-w-24 text-end	text-lg font-medium lg:!mt-0 lg:inline-block relative z-10" key={`mainlink-${index}`}>
         <Link className={`mr-4 no-underline ${currentLocation.pathname === link?.href ? `text-sky-200` : `text-sky-100`} hover:text-white`} to={link?.href}>
           {link?.label}
           {link?.sublinks.length > 0 && <span className="inline-block pl-1">▼</span>}
@@ -68,7 +68,7 @@ const Navbar: React.FC<{ Links?: NavbarLinks[] }> = ({ Links = [] }) => {
           <ul className="mb-0">
             {Links.map(
               (link, index) =>
-                authUser?.roles.some((role) => role?.userRole?.roleId > link?.minRole) &&
+                authUser?.roles.some(role => link?.authRoles?.includes(role?.userRole?.roleId)) &&
                 (link.sublinks.length === 0 ? (
                   <li className="mt-3 text-end	text-lg font-medium lg:!mt-0 lg:inline-block" key={`navbar-${index}`}>
                     <Link
