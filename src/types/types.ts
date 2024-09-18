@@ -108,11 +108,10 @@ export type Issue = {
 };
 
 export type StatusHistory = {
-  statusHistoryId?: number;
   createdAt: Date;
-  userId: AuthUser["userId"];
-  statusId: Status["statusId"];
-  issueId: Issue["issueId"];
+  user: AuthUser;
+  status: Status;
+  respRole: UserRole;
 };
 
 export type Comments = {

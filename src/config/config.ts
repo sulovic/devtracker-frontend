@@ -6,7 +6,11 @@ export const allowedFileTypes = [
   "image/png", // PNG images
   "image/gif", // GIF images
 ];
-export const allowedExtensions = ".jpg, .jpeg, .png, .gif";
+export const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
+
+export const maxNoOfFiles = 5;
+
+export const maxFileSize = 10 * 1024 * 1024;
 
 export const Priviledges = {
   //SalesAppAdmin

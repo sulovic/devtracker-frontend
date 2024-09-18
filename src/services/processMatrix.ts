@@ -28,7 +28,7 @@ const nextRespGroupMatrix = {
     { roleId: 3101, roleName: "Frontend" },
     { roleId: 3201, roleName: "Backend" },
     { roleId: 3301, roleName: "Database" },
-    { roleId: 3401, roleName: "Devops" },
+    { roleId: 3401, roleName: "DevOps" },
   ],
   5: [{ roleId: 1001, roleName: "Reporter" }],
   6: [{ roleId: 1001, roleName: "Reporter" }],

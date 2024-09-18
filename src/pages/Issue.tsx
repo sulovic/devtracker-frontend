@@ -7,21 +7,19 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { handleApiError } from "../services/errorHandlers";
 import Spinner from "../components/Spinner";
 import { AxiosInstance } from "axios";
-import ModalNewComment from "../components/PageComponents/Issues/ModalNewComment";
 import Forward from "../components/Icons/Forward";
 import Backward from "../components/Icons/Backward";
 import useAuth from "../hooks/useAuth";
 import ModalProcessIssue from "../components/PageComponents/Issues/ModalProcessIssue";
 import StatusCard from "../components/PageComponents/Issues/StatusCard";
-import CommentCard from "../components/PageComponents/Issues/CommentCard";
-import IssueCard from "../components/PageComponents/Issues/IssueCard";
+import CommentsSection from "../components/PageComponents/Issues/CommentsSection";
+import IssueSection from "../components/PageComponents/Issues/IssueSection";
 
 const Issue: React.FC = () => {
   const location = useLocation();
   const id: string = location.pathname.replace("/issue/", "");
   const [issue, setIssue] = useState<Issue | null>(null);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
-  const [showModalNewComment, setShowModalNewComment] = useState<boolean>(false);
   const [showModalProcessIssue, setShowModalProcessIssue] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const navigate: NavigateFunction = useNavigate();
@@ -70,7 +68,7 @@ const Issue: React.FC = () => {
                 <h4>{issue?.issueName}</h4>
               </div>
               <div className=" flex items-center justify-center gap-2 text-center bg-zinc-50 border-zinc-300 border-2  rounded-sm">
-                {authUser && authUser?.roles.some((role) => role?.userRole?.roleId >= issue?.respRole?.roleId) && (
+                {authUser && authUser?.roles.some((role) => role?.userRole?.roleId >= issue?.respRole?.roleId) && issue?.status?.statusName !== "Closed" && (
                   <button type="submit">
                     <Forward IconClick={() => {}} />
                   </button>
@@ -84,20 +82,12 @@ const Issue: React.FC = () => {
               <StatusCard title="Status" desc={`${issue?.status?.statusName} >> ${issue?.respRole?.roleName}`} />
             </div>
           </form>
-          <IssueCard issue={issue} />
-          <CommentCard comments={issue?.comments} fetchIssue={fetchIssue} />
-          <div>
-            <div className="flex justify-end py-4">
-              <button type="button" className="button button-sky " aria-label="New User" onClick={() => setShowModalNewComment(true)}>
-                Dodaj komentar
-              </button>
-            </div>
-          </div>
+          <IssueSection issue={issue} />
+          <CommentsSection issue={issue} fetchIssue={fetchIssue} />
         </div>
       )}
 
       {showSpinner && <Spinner />}
-      {showModalNewComment && issue && <ModalNewComment setShowModalNewComment={setShowModalNewComment} fetchIssue={fetchIssue} issue={issue} />}
       {showModalProcessIssue && issue && <ModalProcessIssue setShowModalProcessIssue={setShowModalProcessIssue} fetchIssue={fetchIssue} issue={issue} />}
     </>
   );

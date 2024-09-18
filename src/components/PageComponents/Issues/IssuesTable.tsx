@@ -1,9 +1,9 @@
 import React from "react";
-import Filters from "./Filters";
-import Pagination from "./Pagination";
-import { FiltersType, Issue, PaginationType } from "../types/types";
+import Filters from "../../Filters";
+import Pagination from "../../Pagination";
+import { FiltersType, Issue, PaginationType } from "../../../types/types";
 import { useNavigate } from "react-router-dom";
-import Spinner from "./Spinner";
+import Spinner from "../../Spinner";
 import { format } from "date-fns";
 
 const IssuesTable: React.FC<{

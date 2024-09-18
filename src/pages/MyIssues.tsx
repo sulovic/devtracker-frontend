@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth";
 import { AxiosInstance } from "axios";
 import { handleApiError } from "../services/errorHandlers";
 import ApiParams from "../services/ApiParams";
-import IssuesTable from "../components/IssuesTable";
+import IssuesTable from "../components/PageComponents/Issues/IssuesTable";
 import useParams from "../hooks/useParams";
 
 const MyIssues: React.FC = () => {
