@@ -20,7 +20,8 @@ const Issue: React.FC = () => {
   const id: string = location.pathname.replace("/issue/", "");
   const [issue, setIssue] = useState<Issue | null>(null);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
-  const [showModalProcessIssue, setShowModalProcessIssue] = useState<boolean>(false);
+  const [showModalProcessIssue, setShowModalProcessIssue] =
+    useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const navigate: NavigateFunction = useNavigate();
   const { authUser }: AuthContextType = useAuth();
@@ -28,7 +29,9 @@ const Issue: React.FC = () => {
   const fetchIssue: () => void = async () => {
     try {
       setShowSpinner(true);
-      const response: { data: Issue } = await axiosPrivate.get(`/api/issues/${id}`);
+      const response: { data: Issue } = await axiosPrivate.get(
+        `/api/issues/${id}`,
+      );
       if (response.data) {
         setIssue(response?.data);
       }
@@ -54,32 +57,44 @@ const Issue: React.FC = () => {
 
       {issue !== null && (
         <div className="mx-2 md:mx-4">
-          <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
+          <form
+            onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
+          >
             <h3 className="mt-4 text-center">
               Pregled zahteva {issue?.type?.typeName}-{issue?.issueId}
             </h3>
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 pb-4">
-              <div className=" flex items-center justify-center gap-2 text-center bg-zinc-50 border-zinc-300 border-2  rounded-sm">
+            <div className="grid grid-cols-1 gap-4 pb-4 lg:grid-cols-4">
+              <div className="flex items-center justify-center gap-2 rounded-sm border-2 border-zinc-300 bg-zinc-50 text-center dark:border-zinc-600 dark:bg-zinc-800">
                 <button type="button" onClick={() => navigate(-1)}>
                   <Backward IconClick={() => {}} />
                 </button>
               </div>
-              <div className=" flex items-center justify-center lg:col-span-2 bg-zinc-100 border-zinc-300 border-2 rounded-sm">
+              <div className="flex items-center justify-center rounded-sm border-2 border-zinc-300 bg-zinc-100 lg:col-span-2 dark:border-zinc-600 dark:bg-zinc-800">
                 <h4>{issue?.issueName}</h4>
               </div>
-              <div className=" flex items-center justify-center gap-2 text-center bg-zinc-50 border-zinc-300 border-2  rounded-sm">
-                {authUser && authUser?.roles.some((role) => role?.userRole?.roleId >= issue?.respRole?.roleId) && issue?.status?.statusName !== "Closed" && (
-                  <button type="submit">
-                    <Forward IconClick={() => {}} />
-                  </button>
-                )}
+              <div className="flex items-center justify-center gap-2 rounded-sm border-2 border-zinc-300 bg-zinc-50 text-center dark:border-zinc-600 dark:bg-zinc-800">
+                {authUser &&
+                  authUser?.roles.some(
+                    (role) => role?.userRole?.roleId >= issue?.respRole?.roleId,
+                  ) &&
+                  issue?.status?.statusName !== "Closed" && (
+                    <button type="submit">
+                      <Forward IconClick={() => {}} />
+                    </button>
+                  )}
               </div>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+            <div className="grid grid-cols-2 gap-4 text-center lg:grid-cols-4">
               <StatusCard title="Proizvod" desc={issue?.product?.productName} />
               <StatusCard title="Tip" desc={issue?.type?.typeName} />
-              <StatusCard title="Prioritet" desc={issue?.priority?.priorityName} />
-              <StatusCard title="Status" desc={`${issue?.status?.statusName} >> ${issue?.respRole?.roleName}`} />
+              <StatusCard
+                title="Prioritet"
+                desc={issue?.priority?.priorityName}
+              />
+              <StatusCard
+                title="Status"
+                desc={`${issue?.status?.statusName} >> ${issue?.respRole?.roleName}`}
+              />
             </div>
           </form>
           <IssueSection issue={issue} />
@@ -88,7 +103,13 @@ const Issue: React.FC = () => {
       )}
 
       {showSpinner && <Spinner />}
-      {showModalProcessIssue && issue && <ModalProcessIssue setShowModalProcessIssue={setShowModalProcessIssue} fetchIssue={fetchIssue} issue={issue} />}
+      {showModalProcessIssue && issue && (
+        <ModalProcessIssue
+          setShowModalProcessIssue={setShowModalProcessIssue}
+          fetchIssue={fetchIssue}
+          issue={issue}
+        />
+      )}
     </>
   );
 };

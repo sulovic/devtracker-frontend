@@ -7,9 +7,12 @@ const useAuth: () => AuthContextType = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    toast.error(`Ups! Došlo je do greške. useAuth must be used within a AuthProvider`, {
-      position: "top-center",
-    });
+    toast.error(
+      `Ups! Došlo je do greške. useAuth must be used within a AuthProvider`,
+      {
+        position: "top-center",
+      },
+    );
     throw new Error(" useAuth must be used within a AuthProvider");
   }
 

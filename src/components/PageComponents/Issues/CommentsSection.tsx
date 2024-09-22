@@ -10,12 +10,16 @@ import Modal from "../../Modal";
 import { toast } from "react-toastify";
 import HandleFiles from "./HandleFiles";
 
-const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({ issue, fetchIssue }) => {
+const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({
+  issue,
+  fetchIssue,
+}) => {
   const { authUser } = useAuth();
   const [commentToDelete, setCommentToDelete] = useState<Comments | null>(null);
   const [showHandleFiles, setShowHandleFiles] = useState<boolean>(false);
   const [selectedComment, setSelectedComment] = useState<Comments | null>(null);
-  const [showModalNewComment, setShowModalNewComment] = useState<boolean>(false);
+  const [showModalNewComment, setShowModalNewComment] =
+    useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const axiosPrivate = useAxiosPrivate();
@@ -39,7 +43,11 @@ const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({ i
   };
 
   useEffect(() => {
-    setSelectedComment(issue.comments.find((comment) => comment.commentId === selectedComment?.commentId) || null);
+    setSelectedComment(
+      issue.comments.find(
+        (comment) => comment.commentId === selectedComment?.commentId,
+      ) || null,
+    );
   }, [issue.comments]);
 
   const handleDeleteComment = (comment: Comments) => {
@@ -53,12 +61,15 @@ const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({ i
         <h5>Komentari: </h5>
         {issue?.comments?.length > 0 ? (
           issue?.comments?.map((comment) => (
-            <div key={`text-${comment?.commentId}`} className="bg-zinc-50 border-zinc-200 border-2 px-2 rounded-sm mb-2 grid grid-cols-2 lg:grid-cols-4 ">
+            <div
+              key={`text-${comment?.commentId}`}
+              className="mb-2 grid grid-cols-2 rounded-sm border-2 border-zinc-200 bg-zinc-50 px-2 lg:grid-cols-4 dark:border-zinc-600 dark:bg-zinc-800"
+            >
               <div className="min-h-12 lg:col-span-3">
                 <p>{comment?.commentText}</p>
               </div>
               <div className="text-right">
-                <div className="flex gap-4 py-2 justify-end">
+                <div className="flex justify-end gap-4 py-2">
                   <div>
                     <button
                       onClick={() => {
@@ -71,10 +82,16 @@ const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({ i
                     </button>
                   </div>
                   {authUser &&
-                    (comment?.user?.userId === authUser?.userId || authUser?.roles.some((role) => role?.userRole?.roleName === "Admin")) &&
+                    (comment?.user?.userId === authUser?.userId ||
+                      authUser?.roles.some(
+                        (role) => role?.userRole?.roleName === "Admin",
+                      )) &&
                     issue?.status?.statusName !== "Closed" && (
                       <div>
-                        <button className="button button-red" onClick={() => handleDeleteComment(comment)}>
+                        <button
+                          className="button button-red"
+                          onClick={() => handleDeleteComment(comment)}
+                        >
                           Obriši
                         </button>
                       </div>
@@ -82,13 +99,14 @@ const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({ i
                 </div>
 
                 <p>
-                  {format(comment?.createdAt, "dd.MM.yyyy HH:mm")} : {comment?.user?.firstName} {comment?.user?.lastName}
+                  {format(comment?.createdAt, "dd.MM.yyyy HH:mm")} :{" "}
+                  {comment?.user?.firstName} {comment?.user?.lastName}
                 </p>
               </div>
             </div>
           ))
         ) : (
-          <div className=" bg-zinc-100 border-zinc-300 border-2 px-2 rounded-lg mt-4 ">
+          <div className="mt-4 rounded-lg border-2 border-zinc-300 bg-zinc-100 px-2 dark:border-zinc-600 dark:bg-zinc-800">
             <div className="min-h-12">
               <p>Još uvek nema komentara...</p>
             </div>
@@ -125,7 +143,13 @@ const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({ i
           fetchIssue={fetchIssue}
         />
       )}
-      {showModalNewComment && issue && <ModalNewComment setShowModalNewComment={setShowModalNewComment} fetchIssue={fetchIssue} issue={issue} />}
+      {showModalNewComment && issue && (
+        <ModalNewComment
+          setShowModalNewComment={setShowModalNewComment}
+          fetchIssue={fetchIssue}
+          issue={issue}
+        />
+      )}
     </>
   );
 };

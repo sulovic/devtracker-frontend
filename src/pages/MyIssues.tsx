@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { DashboardLinks } from "../config/config";
 import ModalNewIssue from "../components/PageComponents/Issues/ModalNewIssue";
-import { Issue, AuthContextType, FiltersType, PaginationType, ApiPageParams } from "../types/types";
+import {
+  Issue,
+  AuthContextType,
+  FiltersType,
+  PaginationType,
+  ApiPageParams,
+} from "../types/types";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useAuth from "../hooks/useAuth";
 import { AxiosInstance } from "axios";
@@ -17,7 +23,11 @@ const MyIssues: React.FC = () => {
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const { authUser }: AuthContextType = useAuth();
-  const [pagination, setPagination] = useState<PaginationType>({ page: 1, limit: 10, count: 0 });
+  const [pagination, setPagination] = useState<PaginationType>({
+    page: 1,
+    limit: 10,
+    count: 0,
+  });
   const [filters, setFilters] = useState<FiltersType | undefined>();
   const { allStatuses } = useParams();
 
@@ -29,10 +39,17 @@ const MyIssues: React.FC = () => {
 
       if (authUser) {
         const apiPageParams: ApiPageParams = "MyIssues";
-        apiParams = ApiParams({ authUser, filters, pagination, allStatuses, apiPageParams });
+        apiParams = ApiParams({
+          authUser,
+          filters,
+          pagination,
+          allStatuses,
+          apiPageParams,
+        });
       }
 
-      const response: { data: { data: Issue[]; count: number } } = await axiosPrivate.get(`/api/issues${apiParams}`);
+      const response: { data: { data: Issue[]; count: number } } =
+        await axiosPrivate.get(`/api/issues${apiParams}`);
       setIssuesData(response?.data?.data);
       setPagination({ ...pagination, count: response?.data?.count });
       window.scrollTo({
@@ -54,11 +71,16 @@ const MyIssues: React.FC = () => {
     <>
       <Navbar Links={DashboardLinks} />
       <div className="mx-2 md:mx-4">
-        <div className="flex px-3 mb-2">
+        <div className="mb-2 flex px-3">
           <h3>Moji zahtevi - Pregled unetih zahteva</h3>
           {authUser?.roles.some((role) => role?.userRole?.roleId === 1001) && (
-            <div className="flex flex-grow justify-end items-center">
-              <button type="button" className="button button-sky h-fit" aria-label="New Issue" onClick={() => setShowModalNewIssue(true)}>
+            <div className="flex flex-grow items-center justify-end">
+              <button
+                type="button"
+                className="button button-sky h-fit"
+                aria-label="New Issue"
+                onClick={() => setShowModalNewIssue(true)}
+              >
                 Kreiraj zahtev
               </button>
             </div>
@@ -74,7 +96,12 @@ const MyIssues: React.FC = () => {
         />
       </div>
 
-      {showModalNewIssue && <ModalNewIssue setShowModalNewIssue={setShowModalNewIssue} fetchIssues={fetchIssues} />}
+      {showModalNewIssue && (
+        <ModalNewIssue
+          setShowModalNewIssue={setShowModalNewIssue}
+          fetchIssues={fetchIssues}
+        />
+      )}
     </>
   );
 };

@@ -11,8 +11,8 @@ const axiosPrivate = axios.create({
   baseURL: import.meta.env.VITE_APP_API_BASE_URL,
 });
 
-const useAxiosPrivateFiles : () => AxiosInstance = () => {
-  const { accessToken, handleRefreshToken } : AuthContextType = useAuth();
+const useAxiosPrivateFiles: () => AxiosInstance = () => {
+  const { accessToken, handleRefreshToken }: AuthContextType = useAuth();
 
   useEffect(() => {
     // Request interceptor to add Authorization header
@@ -31,7 +31,12 @@ const useAxiosPrivateFiles : () => AxiosInstance = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 401 && error?.response?.data?.error === "Unauthorized - Access Token Expired" && !prevRequest?.sent) {
+        if (
+          error?.response?.status === 401 &&
+          error?.response?.data?.error ===
+            "Unauthorized - Access Token Expired" &&
+          !prevRequest?.sent
+        ) {
           prevRequest.sent = true;
           try {
             const newAccessToken = await handleRefreshToken();

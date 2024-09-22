@@ -7,7 +7,7 @@ const Dashboard: React.FC = () => {
     <>
       <Navbar Links={DashboardLinks} />
       <div className="mx-2 md:mx-4">
-        <div className="flex px-3 mb-2">
+        <div className="mb-2 flex px-3">
           <h3>Dashboard</h3>
         </div>
       </div>

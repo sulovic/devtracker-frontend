@@ -1,20 +1,32 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { Product, Priority, Type, Status, UserRole, ParamsContextType, AuthContextType } from "../types/types";
+import {
+  Product,
+  Priority,
+  Type,
+  Status,
+  UserRole,
+  ParamsContextType,
+  AuthContextType,
+} from "../types/types";
 import Spinner from "../components/Spinner";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { AxiosInstance } from "axios";
 import { handleApiError } from "../services/errorHandlers";
 import useAuth from "../hooks/useAuth";
 
-export const ParamsContext: React.Context<ParamsContextType | null> = createContext<ParamsContextType | null>(null);
+export const ParamsContext: React.Context<ParamsContextType | null> =
+  createContext<ParamsContextType | null>(null);
 
-export const ParamsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const ParamsProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [allPriorities, setAllPriorities] = useState<Priority[]>([]);
   const [allTypes, setAllTypes] = useState<Type[]>([]);
   const [allStatuses, setAllStatuses] = useState<Status[]>([]);
   const [allUserRoles, setAllUserRoles] = useState<UserRole[]>([]);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
 
   const { authUser }: AuthContextType = useAuth();
@@ -23,15 +35,19 @@ export const ParamsProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     if (authUser) {
       try {
         setShowSpinner(true);
-        const priority: { data: Priority[] } = await axiosPrivate.get("/api/priority");
+        const priority: { data: Priority[] } =
+          await axiosPrivate.get("/api/priority");
         setAllPriorities(priority?.data);
-        const products: { data: Product[] } = await axiosPrivate.get("/api/products");
+        const products: { data: Product[] } =
+          await axiosPrivate.get("/api/products");
         setAllProducts(products?.data);
         const types: { data: Type[] } = await axiosPrivate.get("/api/types");
         setAllTypes(types?.data);
-        const status: { data: Status[] } = await axiosPrivate.get("/api/statuses");
+        const status: { data: Status[] } =
+          await axiosPrivate.get("/api/statuses");
         setAllStatuses(status?.data);
-        const userRoles: { data: UserRole[] } = await axiosPrivate.get("/api/userRoles");
+        const userRoles: { data: UserRole[] } =
+          await axiosPrivate.get("/api/userRoles");
         setAllUserRoles(userRoles?.data);
       } catch (err: any) {
         handleApiError(err);
@@ -39,7 +55,6 @@ export const ParamsProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         setShowSpinner(false);
       }
     }
-   
   };
 
   useEffect(() => {
@@ -47,7 +62,17 @@ export const ParamsProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   }, [authUser]);
 
   return (
-    <ParamsContext.Provider value={{ allProducts, allPriorities, allTypes, allStatuses, allUserRoles }}>
+    <ParamsContext.Provider
+      value={{
+        allProducts,
+        allPriorities,
+        allTypes,
+        allStatuses,
+        allUserRoles,
+        isDarkMode,
+        setIsDarkMode,
+      }}
+    >
       {showSpinner ? <Spinner /> : children}
     </ParamsContext.Provider>
   );

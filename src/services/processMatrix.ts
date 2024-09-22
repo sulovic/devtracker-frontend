@@ -35,7 +35,14 @@ const nextRespGroupMatrix = {
 };
 
 const nextStatus = (statusId: Issue["status"]["statusId"]) => {
-  if ((statusId && statusId === 1) || statusId === 2 || statusId === 3 || statusId === 4 || statusId === 5 || statusId === 6) {
+  if (
+    (statusId && statusId === 1) ||
+    statusId === 2 ||
+    statusId === 3 ||
+    statusId === 4 ||
+    statusId === 5 ||
+    statusId === 6
+  ) {
     return nextStatusMatrix[statusId];
   } else {
     return [];
@@ -43,7 +50,14 @@ const nextStatus = (statusId: Issue["status"]["statusId"]) => {
 };
 
 const nextRespRole = (statusId: Issue["status"]["statusId"]) => {
-  if ((statusId && statusId === 1) || statusId === 2 || statusId === 3 || statusId === 4 || statusId === 5 || statusId === 6) {
+  if (
+    (statusId && statusId === 1) ||
+    statusId === 2 ||
+    statusId === 3 ||
+    statusId === 4 ||
+    statusId === 5 ||
+    statusId === 6
+  ) {
     return nextRespGroupMatrix[statusId];
   } else {
     return [];

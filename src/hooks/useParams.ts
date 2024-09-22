@@ -7,9 +7,12 @@ const useParams: () => ParamsContextType = () => {
   const context = useContext(ParamsContext);
 
   if (!context) {
-    toast.error(`Ups! Došlo je do greške. useParams must be used within a ParamsProvider`, {
-      position: "top-center",
-    });
+    toast.error(
+      `Ups! Došlo je do greške. useParams must be used within a ParamsProvider`,
+      {
+        position: "top-center",
+      },
+    );
     throw new Error("useParams must be used within a ParamsProvider");
   }
 

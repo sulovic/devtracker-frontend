@@ -7,25 +7,37 @@ import type { AuthUser, UserRole } from "../../../types/types";
 import { AxiosInstance } from "axios";
 import useParams from "../../../hooks/useParams";
 
-const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetStateAction<boolean>>; fetchUsers: () => void; selectedUser: AuthUser }> = ({
-  setShowModalEditUser,
-  fetchUsers,
-  selectedUser,
-}) => {
+const ModalEditUser: React.FC<{
+  setShowModalEditUser: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchUsers: () => void;
+  selectedUser: AuthUser;
+}> = ({ setShowModalEditUser, fetchUsers, selectedUser }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const [editedUser, setEditedUser] = useState<AuthUser>(selectedUser);
   const { allUserRoles } = useParams();
 
-  const handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (e) => {
-    setEditedUser({ ...editedUser, [e.target.id]: e.target.id === "roleId" ? parseInt(e.target.value) : e.target.value });
+  const handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
+    e,
+  ) => {
+    setEditedUser({
+      ...editedUser,
+      [e.target.id]:
+        e.target.id === "roleId" ? parseInt(e.target.value) : e.target.value,
+    });
   };
 
   const handleChangeRole: (role: UserRole) => void = (role) => {
     const editedUserData: AuthUser = { ...editedUser };
-    if (editedUserData.roles?.some((existingRole) => existingRole?.userRole?.roleId === role?.roleId)) {
-      editedUserData.roles = editedUserData.roles?.filter((existingRole) => existingRole?.userRole?.roleId !== role?.roleId);
+    if (
+      editedUserData.roles?.some(
+        (existingRole) => existingRole?.userRole?.roleId === role?.roleId,
+      )
+    ) {
+      editedUserData.roles = editedUserData.roles?.filter(
+        (existingRole) => existingRole?.userRole?.roleId !== role?.roleId,
+      );
     } else {
       editedUserData.roles?.push({ userRole: role });
     }
@@ -40,11 +52,17 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
   const handleSubmitOk = async () => {
     try {
       setShowSpinner(true);
-      const responseEditUser = await axiosPrivate.put(`/api/users/${editedUser?.userId}`, editedUser);
+      const responseEditUser = await axiosPrivate.put(
+        `/api/users/${editedUser?.userId}`,
+        editedUser,
+      );
       if (responseEditUser) {
-        toast.success(`Korisnik ${editedUser.firstName + " " + editedUser.lastName} je uspešno izmenjen!`, {
-          position: "top-center",
-        });
+        toast.success(
+          `Korisnik ${editedUser.firstName + " " + editedUser.lastName} je uspešno izmenjen!`,
+          {
+            position: "top-center",
+          },
+        );
       }
     } catch (err) {
       console.log(err);
@@ -60,21 +78,24 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
   };
 
   return (
-    <div className="relative z-5">
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div className="z-5 relative">
+      <div className="fixed inset-0 bg-zinc-500 bg-opacity-75 transition-opacity"></div>
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <form className="flex min-h-full items-center justify-center p-4 text-center" onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
-          <div className="relative p-4 transform w-full max-w-3xl overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:p-8">
-            <div className="w-full sm:mt-0 py-4">
+        <form
+          className="flex min-h-full items-center justify-center p-4 text-center"
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
+        >
+          <div className="relative w-full max-w-3xl transform overflow-hidden rounded-lg bg-white p-4 text-left shadow-xl transition-all sm:p-8 dark:bg-zinc-800">
+            <div className="w-full py-4 sm:mt-0">
               {/* Modal Head */}
               <div className="text-left">
                 <h4>Dodavanje novog korisnika</h4>
-                <div className="my-4 w-full h-0.5 bg-zinc-400"></div>
+                <div className="my-4 h-0.5 w-full bg-zinc-400"></div>
                 {/* Modal Body */}
                 <div className="my-2">
                   <h5>Podaci o korisniku:</h5>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <div>
                     <label htmlFor="firstName">Ime</label>
                     <input
@@ -82,7 +103,9 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
                       id="firstName"
                       aria-describedby="Ime"
                       value={editedUser?.firstName}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChange(e)
+                      }
                       maxLength={64}
                       required
                     />
@@ -94,7 +117,9 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
                       id="lastName"
                       aria-describedby="Prezime"
                       value={editedUser?.lastName}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChange(e)
+                      }
                       maxLength={64}
                       required
                     />
@@ -106,26 +131,41 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
                       id="email"
                       aria-describedby="Email"
                       value={editedUser?.email}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChange(e)
+                      }
                       maxLength={64}
                       required
                     />
                   </div>
                   <div className="md:col-span-2">
                     <label htmlFor="roleId">Ovlašćenja korisnika</label>
-                    <div className=" flex gap-4 flex-wrap">
+                    <div className="flex flex-wrap gap-4">
                       {allUserRoles.length &&
                         allUserRoles.map((role: UserRole) => (
-                          <div className="flex flex-col items-center justify-center" key={role?.roleId}>
+                          <div
+                            className="flex flex-col items-center justify-center"
+                            key={role?.roleId}
+                          >
                             <input
                               type="checkbox"
                               id={`role-${role?.roleId}`}
                               name="roleId"
                               value={role?.roleId}
-                              checked={editedUser?.roles ? editedUser?.roles.some((asignedRole) => asignedRole?.userRole?.roleId === role?.roleId) : false}
+                              checked={
+                                editedUser?.roles
+                                  ? editedUser?.roles.some(
+                                      (asignedRole) =>
+                                        asignedRole?.userRole?.roleId ===
+                                        role?.roleId,
+                                    )
+                                  : false
+                              }
                               onChange={() => handleChangeRole(role)}
                             />
-                            <label htmlFor={`role-${role?.roleId}`}>{role?.roleName}</label>
+                            <label htmlFor={`role-${role?.roleId}`}>
+                              {role?.roleName}
+                            </label>
                           </div>
                         ))}
                     </div>
@@ -133,14 +173,18 @@ const ModalEditUser: React.FC<{ setShowModalEditUser: React.Dispatch<React.SetSt
                 </div>
               </div>
             </div>
-            <div className="my-4 w-full h-0.5 bg-zinc-400"></div>
+            <div className="my-4 h-0.5 w-full bg-zinc-400"></div>
 
             {/* Modal Buttons */}
-            <div className="gap-2 flex flex-row-reverse">
+            <div className="flex flex-row-reverse gap-2">
               <button type="submit" className="button button-sky">
                 OK
               </button>
-              <button type="button" className="button button-gray" onClick={() => setShowModalEditUser(false)}>
+              <button
+                type="button"
+                className="button button-zinc"
+                onClick={() => setShowModalEditUser(false)}
+              >
                 Odustani
               </button>
             </div>

@@ -34,13 +34,21 @@ const SiteRoutes: React.FC = () => {
         <Route element={<ProtectRoute authRoles={Priviledges["/issue"]} />}>
           <Route path="issue/:id" element={<Issue />} />
         </Route>
-        <Route element={<ProtectRoute authRoles={Priviledges["/admin/all-issues"]} />}>
+        <Route
+          element={
+            <ProtectRoute authRoles={Priviledges["/admin/all-issues"]} />
+          }
+        >
           <Route path="admin/all-issues" element={<AllIssues />} />
         </Route>
-        <Route element={<ProtectRoute authRoles={Priviledges["/admin/products"]} />}>
+        <Route
+          element={<ProtectRoute authRoles={Priviledges["/admin/products"]} />}
+        >
           <Route path="admin/products" element={<Products />} />
         </Route>
-        <Route element={<ProtectRoute authRoles={Priviledges["/admin/users"]} />}>
+        <Route
+          element={<ProtectRoute authRoles={Priviledges["/admin/users"]} />}
+        >
           <Route path="admin/users" element={<Users />} />
         </Route>
       </Route>

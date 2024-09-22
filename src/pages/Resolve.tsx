@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { DashboardLinks } from "../config/config";
-import { Issue, AuthContextType, FiltersType, PaginationType, ApiPageParams } from "../types/types";
+import {
+  Issue,
+  AuthContextType,
+  FiltersType,
+  PaginationType,
+  ApiPageParams,
+} from "../types/types";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useAuth from "../hooks/useAuth";
 import { AxiosInstance } from "axios";
@@ -14,7 +20,11 @@ const Resolve: React.FC = () => {
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
   const { authUser }: AuthContextType = useAuth();
-  const [pagination, setPagination] = useState<PaginationType>({ page: 1, limit: 10, count: 0 });
+  const [pagination, setPagination] = useState<PaginationType>({
+    page: 1,
+    limit: 10,
+    count: 0,
+  });
   const [filters, setFilters] = useState<FiltersType | undefined>();
 
   const fetchIssues: () => void = async () => {
@@ -25,10 +35,11 @@ const Resolve: React.FC = () => {
 
       if (authUser) {
         const apiPageParams: ApiPageParams = "Resolve";
-        apiParams = ApiParams({authUser, filters, pagination, apiPageParams});
+        apiParams = ApiParams({ authUser, filters, pagination, apiPageParams });
       }
 
-      const response: { data: { data: Issue[]; count: number } } = await axiosPrivate.get(`/api/issues${apiParams}`);
+      const response: { data: { data: Issue[]; count: number } } =
+        await axiosPrivate.get(`/api/issues${apiParams}`);
       setIssuesData(response?.data?.data);
       setPagination({ ...pagination, count: response?.data?.count });
       window.scrollTo({
@@ -50,7 +61,7 @@ const Resolve: React.FC = () => {
     <>
       <Navbar Links={DashboardLinks} />
       <div className="mx-2 md:mx-4">
-        <div className="flex px-3 mb-2">
+        <div className="mb-2 flex px-3">
           <h3>Rešavanje zahteva</h3>
         </div>
         <IssuesTable

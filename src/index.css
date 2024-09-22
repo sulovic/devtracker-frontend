@@ -4,7 +4,7 @@
 
 @layer components {
   .button {
-    @apply min-w-24 rounded-sm px-2 py-1 font-medium text-gray-600 border-2 border-gray-600 shadow-sm;
+    @apply min-w-24 rounded-sm border border-zinc-300 px-2 py-1 font-medium text-white shadow-sm;
   }
   .button:hover {
     @apply opacity-80;
@@ -13,80 +13,91 @@
     @apply opacity-65;
   }
   .button-red {
-    @apply bg-red-500 border-red-500 text-white;
+    @apply bg-red-500;
   }
   .button-cyan {
-    @apply bg-cyan-500 border-cyan-500 text-white;
+    @apply bg-cyan-500;
   }
   .button-sky {
-    @apply bg-sky-500 border-sky-500 text-white;
+    @apply bg-sky-500;
   }
   .button-green {
-    @apply bg-green-500 border-green-500 text-white;
+    @apply bg-green-500;
   }
-  .button-gray {
-    @apply bg-gray-500 border-gray-500 text-white;
+  .button-zinc {
+    @apply bg-zinc-500;
   }
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  @apply bg-white dark:bg-gray-900;
+  -moz-osx-font-smoothing: zincscale;
+  @apply bg-white dark:bg-zinc-900;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+h1 {
+  @apply py-2 text-3xl font-bold text-zinc-800 dark:text-zinc-50;
 }
 
 h2 {
-  @apply py-2 text-3xl  font-bold text-gray-800 dark:text-gray-50;
-}
-
-h2 {
-  @apply py-2 text-3xl  font-bold text-gray-600 dark:text-gray-50;
+  @apply py-2 text-3xl font-bold text-zinc-600 dark:text-zinc-50;
 }
 
 h3 {
-  @apply py-2 text-2xl  font-bold text-gray-600 dark:text-gray-50;
+  @apply py-2 text-2xl font-bold text-zinc-600 dark:text-zinc-50;
 }
 
 h4 {
-  @apply py-1 text-xl font-bold text-gray-600 dark:text-gray-50;
+  @apply py-1 text-xl font-bold text-zinc-600 dark:text-zinc-50;
 }
 
 h5 {
-  @apply text-lg font-bold text-gray-600 dark:text-gray-50;
+  @apply text-lg font-bold text-zinc-600 dark:text-zinc-50;
 }
 
 h6 {
-  @apply text-sm font-bold text-gray-600 dark:text-gray-50;
+  @apply text-sm font-bold text-zinc-600 dark:text-zinc-50;
 }
 
 p {
-  @apply overflow-hidden truncate whitespace-normal p-1 align-middle font-medium text-gray-600 dark:text-gray-50;
+  @apply overflow-hidden truncate whitespace-normal p-1 align-middle font-medium text-zinc-600 dark:text-zinc-50;
 }
 
 label {
-  @apply my-2 block font-bold text-gray-600 dark:text-gray-50;
+  @apply my-2 block font-bold text-zinc-600 dark:text-zinc-50;
 }
 
 input {
-  @apply w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-600  shadow focus:outline-none dark:disabled:bg-gray-200;
+  @apply w-full appearance-none rounded border px-3 py-2 leading-tight text-zinc-600 shadow focus:outline-none dark:disabled:bg-zinc-200;
 }
 
 textarea {
-  @apply min-h-20 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-600 shadow focus:outline-none dark:disabled:bg-gray-200;
+  @apply min-h-20 w-full appearance-none rounded border px-3 py-2 leading-tight text-zinc-600 shadow focus:outline-none dark:disabled:bg-zinc-200;
 }
 
 select {
-  @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-base text-gray-600 focus:border-sky-500 focus:ring-sky-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-sky-500 dark:focus:ring-sky-500;
+  @apply block w-full rounded-lg border border-zinc-300 bg-zinc-50 p-2.5 text-base text-zinc-600 focus:border-sky-500 focus:ring-sky-500 dark:border-zinc-600 dark:bg-zinc-700 dark:text-white dark:placeholder-zinc-400 dark:focus:border-sky-500 dark:focus:ring-sky-500;
 }
 
 td {
-  @apply whitespace-nowrap px-4 py-2 font-medium text-gray-600 dark:text-gray-50 dark:hover:text-gray-600;
+  @apply whitespace-nowrap px-4 py-2 font-medium;
+}
+
+th {
+  @apply bg-zinc-300 px-4 py-2 text-left font-medium uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400;
+}
+
+tr {
+  @apply border-b bg-white hover:cursor-pointer hover:bg-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:text-zinc-600;
 }
 
 input[type="checkbox"] {
@@ -101,7 +112,9 @@ input[type="checkbox"] {
   background-color: #fff;
   position: relative;
   outline: none;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 }
 
 input[type="checkbox"]:checked {

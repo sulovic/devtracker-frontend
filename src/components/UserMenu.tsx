@@ -1,9 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, Location, NavigateFunction, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  Location,
+  NavigateFunction,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Modal from "./Modal";
 import { NavbarLinks } from "../types/types";
 import { AuthContextType } from "../types/types";
+import useParams from "../hooks/useParams";
+import ToggleSwitch from "./ToggleSwitch";
 
 const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
   const { authUser, handleLogout }: AuthContextType = useAuth();
@@ -12,6 +20,7 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
   const navigate: NavigateFunction = useNavigate();
   const currentLocation: Location = useLocation();
   const menuRef = useRef<HTMLDivElement>(null);
+  const { isDarkMode, setIsDarkMode } = useParams();
 
   const toggleMenuHidden = () => {
     setMenuHidden(!menuHidden);
@@ -36,11 +45,15 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
     setShowLogoutModal(false);
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
     <>
       <div className="relative m-1" ref={menuRef}>
         <button
-          className="button flex bg-gray-600 !py-1"
+          className="button flex bg-zinc-600 !py-1"
           type="button"
           id="dropdownUser"
           data-dropdown-toggle="dropdown"
@@ -49,7 +62,13 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
         >
           <span className="text-lg text-white">MENU</span>
           <span className="m-auto ps-2 text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
               <path
                 fillRule="evenodd"
@@ -61,25 +80,32 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
         <div
           className={`${
             menuHidden ? "hidden" : "absolute right-0"
-          } z-10 my-2 w-auto min-w-56 divide-y divide-gray-100 rounded-lg border border-solid border-gray-600 bg-white shadow dark:bg-gray-600`}
+          } z-10 my-2 w-auto min-w-56 divide-y divide-zinc-100 rounded-lg border border-solid border-zinc-600 bg-white shadow dark:bg-zinc-600`}
         >
           <ul
-            className="mb-0 flex w-full flex-col justify-end px-0 py-2 text-end text-base font-medium text-gray-600 dark:text-gray-200 "
+            className="mb-0 flex w-full flex-col justify-end px-0 py-2 text-end text-base font-medium text-zinc-600 dark:text-zinc-200"
             aria-labelledby="dropdownMenu"
           >
-            <li key={`userMenu-user`} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+            <li
+              key={`userMenu-user`}
+              className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-600 dark:hover:text-white"
+            >
               {authUser?.firstName + " " + authUser?.lastName}
             </li>
             <div className="my-1 h-0.5 w-full bg-zinc-200"></div>
 
             {Links.map(
               (link, index) =>
-                authUser?.roles.some((role) => role?.userRole?.roleId > link?.minRole) && (
+                authUser?.roles.some((role) =>
+                  link?.authRoles.includes(role?.userRole?.roleId),
+                ) && (
                   <React.Fragment key={`fragment-${index}`}>
                     <li
                       className={`block px-4 py-2 font-medium no-underline ${
-                        currentLocation.pathname === link?.href ? `text-gray-500` : `text-gray-600`
-                      }  text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-white`}
+                        currentLocation.pathname === link?.href
+                          ? `text-zinc-500`
+                          : `text-zinc-600`
+                      } text-zinc-600 hover:bg-zinc-100 lg:hidden dark:text-zinc-100 dark:hover:bg-zinc-600 dark:hover:text-white`}
                       key={`userMenu-${index}`}
                       onClick={toggleMenuHidden}
                     >
@@ -90,8 +116,10 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
                         <li
                           key={`userMenu-${index}-${subIndex}`}
                           className={`block px-6 py-1 font-medium no-underline ${
-                            currentLocation.pathname === link?.href ? `text-gray-500` : `text-gray-600`
-                          }  text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:text-white`}
+                            currentLocation.pathname === link?.href
+                              ? `text-zinc-500`
+                              : `text-zinc-600`
+                          } text-zinc-600 hover:bg-zinc-100 lg:hidden dark:text-zinc-100 dark:hover:bg-zinc-600 dark:hover:text-white`}
                         >
                           <Link to={sublink?.href}>
                             {sublink?.label} {"<"}
@@ -99,12 +127,33 @@ const UserMenu: React.FC<{ Links: NavbarLinks[] }> = ({ Links = [] }) => {
                         </li>
                       ))}
                   </React.Fragment>
-                )
+                ),
             )}
             <div className="my-1 h-0.5 w-full bg-zinc-200"></div>
 
-            <li key={`userMenu-logout`} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-              <button className="float-end" onClick={() => setShowLogoutModal(true)}>
+            <li
+              key={`toggleDarkMode`}
+              className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-600 dark:hover:text-white"
+            >
+              <div className="flex items-center justify-end">
+                <p>Dark mode: </p>
+
+                <ToggleSwitch
+                  enabled={isDarkMode}
+                  handleToggle={toggleDarkMode}
+                />
+              </div>
+            </li>
+            <div className="my-1 h-0.5 w-full bg-zinc-200"></div>
+
+            <li
+              key={`userMenu-logout`}
+              className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-600 dark:hover:text-white"
+            >
+              <button
+                className="float-end"
+                onClick={() => setShowLogoutModal(true)}
+              >
                 Logout
               </button>
             </li>

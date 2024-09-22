@@ -12,19 +12,23 @@ const Filters: React.FC<{
   const { allProducts, allPriorities, allTypes, allStatuses } = useParams();
   const { pathname } = useLocation();
 
-
   useEffect(() => {
     setPagination({ ...pagination, page: 1 });
   }, [filters]);
 
   return (
-    <div className="flex flex-wrap gap-2 justify-end">
+    <div className="flex flex-wrap justify-end gap-2">
       {/* Product filter */}
       <select
         name="product"
         value={filters?.product?.productName}
         onChange={(e) => {
-          setFilters({ ...filters, product: allProducts?.find((product) => product?.productName === e.target.value) });
+          setFilters({
+            ...filters,
+            product: allProducts?.find(
+              (product) => product?.productName === e.target.value,
+            ),
+          });
         }}
       >
         <option value="">Svi proizvodi</option>
@@ -39,7 +43,10 @@ const Filters: React.FC<{
         name="type"
         value={filters?.type?.typeName}
         onChange={(e) => {
-          setFilters({ ...filters, type: allTypes?.find((type) => type?.typeName === e.target.value) });
+          setFilters({
+            ...filters,
+            type: allTypes?.find((type) => type?.typeName === e.target.value),
+          });
         }}
       >
         <option value="">Svi tipovi</option>
@@ -54,7 +61,12 @@ const Filters: React.FC<{
         name="priority"
         value={filters?.priority?.priorityName}
         onChange={(e) => {
-          setFilters({ ...filters, priority: allPriorities?.find((priority) => priority?.priorityName === e.target.value) });
+          setFilters({
+            ...filters,
+            priority: allPriorities?.find(
+              (priority) => priority?.priorityName === e.target.value,
+            ),
+          });
         }}
       >
         <option value="">Svi prioriteti</option>
@@ -65,20 +77,27 @@ const Filters: React.FC<{
         ))}
       </select>
       {/* Status filter */}
-      {(pathname === "/my-issues" || pathname === "/admin/all-issues") && (<select
-        name="status"
-        value={filters?.status?.statusName}
-        onChange={(e) => {
-          setFilters({ ...filters, status: allStatuses?.find((status) => status?.statusName === e.target.value) });
-        }}
-      >
-        <option value="">Aktivni statusi</option>
-        {allStatuses?.map((status) => (
-          <option key={status?.statusId} value={status?.statusName}>
-            {status?.statusName}
-          </option>
-        ))}
-      </select>)}
+      {(pathname === "/my-issues" || pathname === "/admin/all-issues") && (
+        <select
+          name="status"
+          value={filters?.status?.statusName}
+          onChange={(e) => {
+            setFilters({
+              ...filters,
+              status: allStatuses?.find(
+                (status) => status?.statusName === e.target.value,
+              ),
+            });
+          }}
+        >
+          <option value="">Aktivni statusi</option>
+          {allStatuses?.map((status) => (
+            <option key={status?.statusId} value={status?.statusName}>
+              {status?.statusName}
+            </option>
+          ))}
+        </select>
+      )}
     </div>
   );
 };

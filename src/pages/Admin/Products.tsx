@@ -14,8 +14,10 @@ import { handleApiError } from "../../services/errorHandlers";
 const Products: React.FC = () => {
   const [productsData, setProductsData] = useState<Product[]>([]);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
-  const [showModalNewProduct, setShowModalNewProduct] = useState<boolean>(false);
-  const [showModalEditProduct, setShowModalEditProduct] = useState<boolean>(false);
+  const [showModalNewProduct, setShowModalNewProduct] =
+    useState<boolean>(false);
+  const [showModalEditProduct, setShowModalEditProduct] =
+    useState<boolean>(false);
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const axiosPrivate = useAxiosPrivate();
@@ -25,7 +27,8 @@ const Products: React.FC = () => {
   const fetchProducts: () => void = async () => {
     try {
       setShowSpinner(true);
-      const productsResponse: { data: Product[] } = await axiosPrivate.get("/api/products");
+      const productsResponse: { data: Product[] } =
+        await axiosPrivate.get("/api/products");
       setProductsData(productsResponse?.data);
     } catch (err: any) {
       handleApiError(err);
@@ -46,11 +49,16 @@ const Products: React.FC = () => {
   const handleDeleteOK: () => void = async () => {
     try {
       setShowSpinner(true);
-      const deleteProductRespose: { data: Product } = await axiosPrivate.delete(`/api/products/${selectedProduct?.productId}`);
+      const deleteProductRespose: { data: Product } = await axiosPrivate.delete(
+        `/api/products/${selectedProduct?.productId}`,
+      );
 
-      toast.success(`Proizvod ${deleteProductRespose?.data?.productName} je uspešno obrisan!`, {
-        position: "top-center",
-      });
+      toast.success(
+        `Proizvod ${deleteProductRespose?.data?.productName} je uspešno obrisan!`,
+        {
+          position: "top-center",
+        },
+      );
     } catch (err: any) {
       handleApiError(err);
     } finally {
@@ -75,10 +83,15 @@ const Products: React.FC = () => {
     <>
       <Navbar Links={DashboardLinks} />
       <div className="mx-2 md:mx-4">
-        <div className="flex px-3 mb-2">
+        <div className="mb-2 flex px-3">
           <h3>Proizvodi</h3>
-          <div className="flex flex-grow justify-end items-center">
-            <button type="button" className="button button-sky " aria-label="New Product" onClick={() => setShowModalNewProduct(true)}>
+          <div className="flex flex-grow items-center justify-end">
+            <button
+              type="button"
+              className="button button-sky"
+              aria-label="New Product"
+              onClick={() => setShowModalNewProduct(true)}
+            >
               Dodaj proizvod
             </button>
           </div>
@@ -86,58 +99,81 @@ const Products: React.FC = () => {
 
         {/* Render main data DIV */}
 
-          <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
-            <div className="table-responsive p-3">
-              <table className="w-full text-center text-sm text-zinc-500 rtl:text-right dark:text-zinc-400 ">
-                <thead className=" bg-zinc-200 uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400">
-                  <tr>
-                    {tableHeaders.map((tableKey, index) => (
-                      <th className="px-6 py-3" key={index}>
-                        {tableKey}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {productsData.length
-                    ? productsData.map((product, index) => (
-                        <tr key={index} className="border-b bg-white hover:!bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800">
-                          <td key={`productName${index}`}>{product?.productName}</td>
-                          <td key={`edit_${index}`} className="text-center">
-                            <button type="button" className="button button-sky" aria-label="Edit" onClick={() => handleEditProduct(product)}>
-                              Izmeni
-                            </button>
-                          </td>
-                          <td key={`delete_${index}`} className="text-center">
-                            <button
-                              type="button"
-                              className="button button-red"
-                              aria-label="Delete"
-                              disabled={!authUser?.roles.some((role) => role?.userRole?.roleId > 5000)}
-                              onClick={() => handleDelete(product)}
-                            >
-                              Obriši
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    : !showSpinner && (
-                        <tr>
-                          <td colSpan={3} className="p-3">
-                            Nema podataka o proizvodima...
-                          </td>
-                        </tr>
-                      )}
-                </tbody>
-              </table>
-              {/* Modal and Spinner component */}
-            </div>
+        <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
+          <div className="table-responsive p-3">
+            <table className="w-full text-center text-sm text-zinc-500 rtl:text-right dark:text-zinc-400">
+              <thead className="bg-zinc-200 uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400">
+                <tr>
+                  {tableHeaders.map((tableKey, index) => (
+                    <th className="px-6 py-3" key={index}>
+                      {tableKey}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {productsData.length
+                  ? productsData.map((product, index) => (
+                      <tr
+                        key={index}
+                        className="border-b bg-white hover:!bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800"
+                      >
+                        <td key={`productName${index}`}>
+                          {product?.productName}
+                        </td>
+                        <td key={`edit_${index}`} className="text-center">
+                          <button
+                            type="button"
+                            className="button button-sky"
+                            aria-label="Edit"
+                            onClick={() => handleEditProduct(product)}
+                          >
+                            Izmeni
+                          </button>
+                        </td>
+                        <td key={`delete_${index}`} className="text-center">
+                          <button
+                            type="button"
+                            className="button button-red"
+                            aria-label="Delete"
+                            disabled={
+                              !authUser?.roles.some(
+                                (role) => role?.userRole?.roleId > 5000,
+                              )
+                            }
+                            onClick={() => handleDelete(product)}
+                          >
+                            Obriši
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  : !showSpinner && (
+                      <tr>
+                        <td colSpan={3} className="p-3">
+                          Nema podataka o proizvodima...
+                        </td>
+                      </tr>
+                    )}
+              </tbody>
+            </table>
+            {/* Modal and Spinner component */}
+          </div>
         </div>
       </div>
       {showSpinner && <Spinner />}
-      {showModalNewProduct && <ModalNewProduct setShowModalNewProduct={setShowModalNewProduct} fetchProducts={fetchProducts} />}
+      {showModalNewProduct && (
+        <ModalNewProduct
+          setShowModalNewProduct={setShowModalNewProduct}
+          fetchProducts={fetchProducts}
+        />
+      )}
       {showModalEditProduct && selectedProduct && (
-        <ModalEditProduct setShowModalEditProduct={setShowModalEditProduct} fetchProducts={fetchProducts} selectedProduct={selectedProduct} />
+        <ModalEditProduct
+          setShowModalEditProduct={setShowModalEditProduct}
+          fetchProducts={fetchProducts}
+          selectedProduct={selectedProduct}
+        />
       )}
       {showModalDelete && (
         <Modal

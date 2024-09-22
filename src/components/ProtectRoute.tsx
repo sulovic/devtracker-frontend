@@ -4,12 +4,17 @@ import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import type { AuthContextType } from "../types/types";
 
-const ProtectRoute: React.FC<{ authRoles: number[] }> = ({ authRoles = [5001] }) => {
+const ProtectRoute: React.FC<{ authRoles: number[] }> = ({
+  authRoles = [5001],
+}) => {
   const { authUser }: AuthContextType = useAuth();
   const navigate: NavigateFunction = useNavigate();
 
   useEffect(() => {
-    if (!authUser || !authUser.roles.some((role) => authRoles.includes(role?.userRole?.roleId))) {
+    if (
+      !authUser ||
+      !authUser.roles.some((role) => authRoles.includes(role?.userRole?.roleId))
+    ) {
       toast.warning(
         <div>
           UPS!!! Izgleda da niste autorizovani da posetite ovu lokaciju!
@@ -18,7 +23,7 @@ const ProtectRoute: React.FC<{ authRoles: number[] }> = ({ authRoles = [5001] })
         {
           position: "top-center",
           autoClose: 2000,
-        }
+        },
       );
       setTimeout(() => {
         navigate("/");
@@ -26,7 +31,10 @@ const ProtectRoute: React.FC<{ authRoles: number[] }> = ({ authRoles = [5001] })
     }
   }, [authUser, authRoles, navigate]);
 
-  if (authUser && authUser.roles.some((role) => authRoles.includes(role?.userRole?.roleId))) {
+  if (
+    authUser &&
+    authUser.roles.some((role) => authRoles.includes(role?.userRole?.roleId))
+  ) {
     return <Outlet />;
   }
 

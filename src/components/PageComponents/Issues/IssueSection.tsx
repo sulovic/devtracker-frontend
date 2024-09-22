@@ -4,17 +4,18 @@ import { format } from "date-fns";
 import ModalIssueStatusHistory from "./ModalIssueStatusHistory";
 
 const IssueSection: React.FC<{ issue: Issue }> = ({ issue }) => {
-  const [showModalIssueStatusHistory, setShowModalIssueStatusHistory] = useState<boolean>(false);
+  const [showModalIssueStatusHistory, setShowModalIssueStatusHistory] =
+    useState<boolean>(false);
   return (
     <>
       <div className="mt-2">
         <h5>Opis zahteva: </h5>
-        <div className=" bg-zinc-100 border-zinc-300 border-2 px-2 rounded-sm grid grid-cols-2 lg:grid-cols-4  ">
+        <div className="grid grid-cols-2 rounded-sm border-2 border-zinc-300 bg-zinc-100 px-2 lg:grid-cols-4 dark:border-zinc-600 dark:bg-zinc-800">
           <div className="min-h-12 lg:col-span-3">
             <p> {issue?.issueDesc}</p>
           </div>
           <div className="text-right">
-            <div className="flex gap-4 py-2 justify-end">
+            <div className="flex justify-end gap-4 py-2">
               <div>
                 <button
                   onClick={() => {
@@ -27,12 +28,18 @@ const IssueSection: React.FC<{ issue: Issue }> = ({ issue }) => {
               </div>
             </div>
             <p>
-              {format(issue?.createdAt, "dd.MM.yyyy HH:mm ")} : {issue?.user?.firstName} {issue?.user?.lastName}
+              {format(issue?.createdAt, "dd.MM.yyyy HH:mm ")} :{" "}
+              {issue?.user?.firstName} {issue?.user?.lastName}
             </p>
           </div>
         </div>
       </div>
-      {showModalIssueStatusHistory && <ModalIssueStatusHistory issue={issue} setShowModalIssueStatusHistory={setShowModalIssueStatusHistory} />}
+      {showModalIssueStatusHistory && (
+        <ModalIssueStatusHistory
+          issue={issue}
+          setShowModalIssueStatusHistory={setShowModalIssueStatusHistory}
+        />
+      )}
     </>
   );
 };

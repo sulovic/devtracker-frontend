@@ -2,7 +2,9 @@ import axios from "axios";
 import { LoginData, AxiosLoginResponse } from "../types/types";
 import { handleApiError } from "./errorHandlers";
 
-const ApiLoginConnector: (data: LoginData) => Promise<AxiosLoginResponse | undefined> = async (data) => {
+const ApiLoginConnector: (
+  data: LoginData,
+) => Promise<AxiosLoginResponse | undefined> = async (data) => {
   const apiURL: string = `${import.meta.env.VITE_APP_API_BASE_URL}/login`;
   try {
     const response: AxiosLoginResponse = await axios.post(apiURL, data, {
@@ -30,7 +32,9 @@ const ApiLogoutConnector: () => Promise<void> = async () => {
   }
 };
 
-const ApiRefreshConnector: () => Promise<AxiosLoginResponse | undefined> = async () => {
+const ApiRefreshConnector: () => Promise<
+  AxiosLoginResponse | undefined
+> = async () => {
   const apiURL = `${import.meta.env.VITE_APP_API_BASE_URL}/refresh`;
 
   try {

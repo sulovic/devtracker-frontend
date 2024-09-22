@@ -6,7 +6,8 @@ import type { AuthContextType } from "../types/types";
 import { handleApiError } from "../services/errorHandlers";
 
 const PersistLogin: React.FC = () => {
-  const { authUser, accessToken, handleRefreshToken }: AuthContextType = useAuth();
+  const { authUser, accessToken, handleRefreshToken }: AuthContextType =
+    useAuth();
   const [showSpinner, setShowSpinner] = useState<boolean>(true);
 
   useEffect(() => {

@@ -4,16 +4,21 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import Spinner from "../../Spinner";
 import { toast } from "react-toastify";
 import { AxiosInstance } from "axios";
-import type { Priority, Type, Issue, AuthContextType } from "../../../types/types";
+import type {
+  Priority,
+  Type,
+  Issue,
+  AuthContextType,
+} from "../../../types/types";
 import { handleApiError } from "../../../services/errorHandlers";
 import useAuth from "../../../hooks/useAuth";
 import useParams from "../../../hooks/useParams";
 import { Navigate } from "react-router-dom";
 
-const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetStateAction<boolean>>; fetchIssues: () => void }> = ({
-  setShowModalNewIssue,
-  fetchIssues,
-}) => {
+const ModalNewIssue: React.FC<{
+  setShowModalNewIssue: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchIssues: () => void;
+}> = ({ setShowModalNewIssue, fetchIssues }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const axiosPrivate: AxiosInstance = useAxiosPrivate();
@@ -28,7 +33,9 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
     issueName: "",
     issueDesc: "",
     createdAt: new Date(),
-    user: authUser ? authUser : { firstName: "", lastName: "", email: "", iat: 0, exp: 0, roles: [] },
+    user: authUser
+      ? authUser
+      : { firstName: "", lastName: "", email: "", iat: 0, exp: 0, roles: [] },
     type: { typeName: "" },
     status: { statusId: 1, statusName: "New" },
     priority: { priorityName: "" },
@@ -45,11 +52,17 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
   const handleSubmitOK: () => void = async () => {
     try {
       setShowSpinner(true);
-      const responseAddIssue: { data: Issue } = await axiosPrivate.post("/api/issues", newIssue);
+      const responseAddIssue: { data: Issue } = await axiosPrivate.post(
+        "/api/issues",
+        newIssue,
+      );
       if (responseAddIssue) {
-        toast.success(`Novi zahtev ${responseAddIssue?.data?.issueName} je uspešno kreiran!`, {
-          position: "top-center",
-        });
+        toast.success(
+          `Novi zahtev ${responseAddIssue?.data?.issueName} je uspešno kreiran!`,
+          {
+            position: "top-center",
+          },
+        );
       }
     } catch (err: any) {
       handleApiError(err);
@@ -64,20 +77,25 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
   return (
     <>
       <div className="relative z-20">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75">
+        <div className="fixed inset-0 bg-zinc-500 bg-opacity-75">
           <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
-            <form className="flex min-h-full items-center justify-center p-4 text-center" onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
-              <div className="relative p-4 transform w-full max-w-4xl overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl sm:p-8">
-                <div className="w-full sm:mt-0 py-4">
+            <form
+              className="flex min-h-full items-center justify-center p-4 text-center"
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+                handleSubmit(e)
+              }
+            >
+              <div className="relative w-full max-w-4xl transform overflow-hidden rounded-lg bg-white p-4 text-left shadow-xl sm:p-8 dark:bg-zinc-800">
+                <div className="w-full py-4 sm:mt-0">
                   {/* Modal Head */}
                   <div className="text-left">
                     <h4>Kreiranje novog zahteva</h4>
-                    <div className="my-4 w-full h-0.5 bg-zinc-400"></div>
+                    <div className="my-4 h-0.5 w-full bg-zinc-400"></div>
                     {/* Modal Body */}
                     <div className="my-2">
                       <h5>Podaci o zahtevu:</h5>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                       <div>
                         <label htmlFor="issueName">Naziv zahteva</label>
                         <input
@@ -85,7 +103,12 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
                           id="issueName"
                           aria-describedby="Issue Name"
                           value={newIssue?.issueName}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewIssue({ ...newIssue, [e.target.id]: e.target.value })}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setNewIssue({
+                              ...newIssue,
+                              [e.target.id]: e.target.value,
+                            })
+                          }
                           maxLength={64}
                           required
                         />
@@ -96,7 +119,14 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
                           id="issueDesc"
                           aria-describedby="Issue Description"
                           value={newIssue?.issueDesc}
-                          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewIssue({ ...newIssue, [e.target.id]: e.target.value })}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLTextAreaElement>,
+                          ) =>
+                            setNewIssue({
+                              ...newIssue,
+                              [e.target.id]: e.target.value,
+                            })
+                          }
                           maxLength={512}
                           required
                         />
@@ -109,7 +139,13 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
                           required
                           value={newIssue?.type?.typeId}
                           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                            setNewIssue({ ...newIssue, [e.target.id]: allTypes.find((type: Type) => type.typeId === parseInt(e.target.value)) })
+                            setNewIssue({
+                              ...newIssue,
+                              [e.target.id]: allTypes.find(
+                                (type: Type) =>
+                                  type.typeId === parseInt(e.target.value),
+                              ),
+                            })
                           }
                         >
                           <option key={`type-"none"`} value="">
@@ -117,7 +153,10 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
                           </option>
                           {allTypes.length &&
                             allTypes.map((type: Type) => (
-                              <option key={`type-${type?.typeId}`} value={type.typeId}>
+                              <option
+                                key={`type-${type?.typeId}`}
+                                value={type.typeId}
+                              >
                                 {type?.typeName}
                               </option>
                             ))}
@@ -133,7 +172,11 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
                           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                             setNewIssue({
                               ...newIssue,
-                              [e.target.id]: allPriorities.find((priority: Priority) => priority?.priorityId === parseInt(e.target.value)),
+                              [e.target.id]: allPriorities.find(
+                                (priority: Priority) =>
+                                  priority?.priorityId ===
+                                  parseInt(e.target.value),
+                              ),
                             })
                           }
                         >
@@ -142,7 +185,10 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
                           </option>
                           {allPriorities.length &&
                             allPriorities.map((priority: Priority) => (
-                              <option key={`priority-${priority?.priorityId}`} value={priority?.priorityId}>
+                              <option
+                                key={`priority-${priority?.priorityId}`}
+                                value={priority?.priorityId}
+                              >
                                 {priority?.priorityName}
                               </option>
                             ))}
@@ -151,14 +197,18 @@ const ModalNewIssue: React.FC<{ setShowModalNewIssue: React.Dispatch<React.SetSt
                     </div>
                   </div>
                 </div>
-                <div className="my-4 w-full h-0.5 bg-zinc-400"></div>
+                <div className="my-4 h-0.5 w-full bg-zinc-400"></div>
 
                 {/* Modal Buttons */}
-                <div className="gap-2 flex flex-row-reverse">
+                <div className="flex flex-row-reverse gap-2">
                   <button type="submit" className="button button-sky">
                     OK
                   </button>
-                  <button type="button" className="button button-gray" onClick={() => setShowModalNewIssue(false)}>
+                  <button
+                    type="button"
+                    className="button button-zinc"
+                    onClick={() => setShowModalNewIssue(false)}
+                  >
                     Odustani
                   </button>
                 </div>

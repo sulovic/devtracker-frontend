@@ -13,25 +13,37 @@ const IssuesTable: React.FC<{
   setPagination: React.Dispatch<React.SetStateAction<PaginationType>>;
   filters: FiltersType | undefined;
   setFilters: React.Dispatch<React.SetStateAction<FiltersType | undefined>>;
-}> = ({ issuesData, showSpinner, pagination, setPagination, filters, setFilters }) => {
+}> = ({
+  issuesData,
+  showSpinner,
+  pagination,
+  setPagination,
+  filters,
+  setFilters,
+}) => {
   const navigate = useNavigate();
 
   return (
     <>
-      <Filters filters={filters} setFilters={setFilters} pagination={pagination} setPagination={setPagination} />
+      <Filters
+        filters={filters}
+        setFilters={setFilters}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
       <div className="relative mb-2 overflow-x-auto shadow-lg sm:rounded-lg">
         <div className="table-responsive p-3">
-          <table className="w-full text-sm text-zinc-500 rtl:text-right dark:text-zinc-400 ">
-            <thead className=" text-left bg-zinc-300 uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400">
+          <table className="w-full text-sm text-zinc-500 rtl:text-right dark:text-zinc-400">
+            <thead>
               <tr>
-                <th className="px-4 py-4 "></th>
-                <th className="px-4 py-4 ">Tip-ID</th>
-                <th className="px-4 py-4 w-5/12">Naziv</th>
-                <th className="px-4 py-4 ">Proizvod</th>
-                <th className="px-4 py-4 ">Status</th>
-                <th className="px-4 py-4 ">Odgovornost</th>
-                <th className="px-4 py-4 ">Kreiran</th>
-                <th className="px-4 py-4 ">Prioritet</th>
+                <th></th>
+                <th>Tip-ID</th>
+                <th className="w-5/12">Naziv</th>
+                <th>Proizvod</th>
+                <th>Status</th>
+                <th>Odgovornost</th>
+                <th>Kreiran</th>
+                <th>Prioritet</th>
               </tr>
             </thead>
             <tbody>
@@ -39,25 +51,30 @@ const IssuesTable: React.FC<{
                 ? issuesData?.map((issue, index) => (
                     <tr
                       key={issue?.issueId}
-                      className="border-b bg-white hover:!bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 hover:cursor-pointer"
                       onClick={() => navigate(`/issue/${issue?.issueId}`)}
                     >
                       <td key={`index_${index}`}>{index + 1}</td>
                       <td className="uppercase" key={`issueId_${index}`}>
-                        <p className="bg-zinc-100">
+                        <p className="bg-zinc-100 text-zinc-600">
                           {issue?.type?.typeName}-{issue?.issueId}
                         </p>
                       </td>
                       <td key={`issueName_${index}`}>{issue?.issueName}</td>
-                      <td key={`issueProduct_${index}`}>{issue?.product?.productName}</td>
-                      <td key={`issueStatus_${index}`}>{issue?.status?.statusName}</td>
-                      <td key={`issueRespRole_${index}`}>{issue?.respRole?.roleName}</td>
-                      <td key={`issueCreatedAt_${index}`}>{format(issue?.createdAt, "dd.MM.yyyy")}</td>
+                      <td key={`issueProduct_${index}`}>
+                        {issue?.product?.productName}
+                      </td>
+                      <td key={`issueStatus_${index}`}>
+                        {issue?.status?.statusName}
+                      </td>
+                      <td key={`issueRespRole_${index}`}>
+                        {issue?.respRole?.roleName}
+                      </td>
+                      <td key={`issueCreatedAt_${index}`}>
+                        {format(issue?.createdAt, "dd.MM.yyyy")}
+                      </td>
                       <td key={`issuePriority_${index}`}>
                         <p
-                          className={
-                            issue.priority.priorityName === "Low" ? "bg-green-100" : issue.priority.priorityName === "Medium" ? "bg-sky-100" : "bg-red-100"
-                          }
+                          className={`${issue.priority.priorityName === "Low" ? "bg-green-100" : issue.priority.priorityName === "Medium" ? "bg-sky-100" : "bg-red-100"} text-zinc-600`}
                         >
                           {issue?.priority?.priorityName}
                         </p>

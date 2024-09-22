@@ -23,7 +23,7 @@ const useAxiosPrivate: () => AxiosInstance = () => {
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     // Response interceptor to handle token refresh
@@ -31,7 +31,12 @@ const useAxiosPrivate: () => AxiosInstance = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 401 && error?.response?.data?.error === "Unauthorized - Access Token Expired" && !prevRequest?.sent) {
+        if (
+          error?.response?.status === 401 &&
+          error?.response?.data?.error ===
+            "Unauthorized - Access Token Expired" &&
+          !prevRequest?.sent
+        ) {
           prevRequest.sent = true;
           try {
             const newAccessToken = await handleRefreshToken();
@@ -42,7 +47,7 @@ const useAxiosPrivate: () => AxiosInstance = () => {
           }
         }
         return Promise.reject(error);
-      }
+      },
     );
 
     // Cleanup interceptors on unmount

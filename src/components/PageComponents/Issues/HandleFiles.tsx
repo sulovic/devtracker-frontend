@@ -4,7 +4,11 @@ import Spinner from "../../Spinner";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useAxiosPrivateFiles from "../../../hooks/useAxiosPrivateFiles";
-import { allowedExtensions, maxNoOfFiles, maxFileSize } from "../../../config/config";
+import {
+  allowedExtensions,
+  maxNoOfFiles,
+  maxFileSize,
+} from "../../../config/config";
 import { Comments, Documents } from "../../../types/types";
 import useAuth from "../../../hooks/useAuth";
 import { handleApiError } from "../../../services/errorHandlers";
@@ -33,7 +37,10 @@ const HandleFiles = ({
 
   const handleFileClick = async (document: Documents): Promise<void> => {
     try {
-      const response = await axiosPrivate.get(`uploads/${document?.documentUrl}`, { responseType: "blob" });
+      const response = await axiosPrivate.get(
+        `uploads/${document?.documentUrl}`,
+        { responseType: "blob" },
+      );
       const blob = new Blob([response?.data], {
         type: response?.headers["content-type"] || "application/octet-stream",
       });
@@ -91,7 +98,6 @@ const HandleFiles = ({
   const handleDeleteOk = async () => {
     setShowSpinner(true);
     try {
-    
       // Delete file
       await axiosPrivate.delete(`api/uploads/${selectedFile?.documentId}`);
 
@@ -104,11 +110,12 @@ const HandleFiles = ({
       setShowSpinner(false);
       setShowDeleteModal(false);
       fetchIssue();
-
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
     setShowSpinner(true);
 
@@ -153,7 +160,9 @@ const HandleFiles = ({
     let invalidFileSize = false;
 
     Array.from(files).forEach((file) => {
-      const fileExtension = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+      const fileExtension = file.name
+        .slice(file.name.lastIndexOf("."))
+        .toLowerCase();
       if (!allowedExtensions.includes(fileExtension)) {
         hasInvalidFile = true;
       }
@@ -170,9 +179,12 @@ const HandleFiles = ({
     }
 
     if (invalidFileSize) {
-      toast.warn(`Maksimalna veličina datoteke je ${maxFileSize / 1024 / 1024} MB`, {
-        position: "top-center",
-      });
+      toast.warn(
+        `Maksimalna veličina datoteke je ${maxFileSize / 1024 / 1024} MB`,
+        {
+          position: "top-center",
+        },
+      );
       return;
     }
 
@@ -193,10 +205,10 @@ const HandleFiles = ({
 
   return (
     <div className="relative z-10">
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div className="fixed inset-0 bg-zinc-500 bg-opacity-75 transition-opacity"></div>
       <div className="fixed inset-0 z-10 overflow-y-auto">
         <div className="flex min-h-full items-center justify-center p-4 text-center">
-          <div className="relative w-full transform overflow-hidden rounded-lg bg-white p-4 text-left shadow-xl transition-all sm:p-8 dark:bg-gray-800">
+          <div className="relative w-full transform overflow-hidden rounded-lg bg-white p-4 text-left shadow-xl transition-all sm:p-8 dark:bg-zinc-800">
             <div className="w-full sm:mt-0">
               {/* Modal Head */}
 
@@ -209,16 +221,35 @@ const HandleFiles = ({
                 <h4>Prikačene datoteke: </h4>
 
                 <div>
-                  {selectedComment?.documents && selectedComment?.documents.length > 0 ? (
+                  {selectedComment?.documents &&
+                  selectedComment?.documents.length > 0 ? (
                     selectedComment?.documents.map((document, index) => (
-                      <div key={`document_${index}`} className="my-4 flex items-center gap-4">
+                      <div
+                        key={`document_${index}`}
+                        className="my-4 flex items-center gap-4"
+                      >
                         <p className="grow">{document?.documentUrl}</p>
-                        <button type="button" className="button button-sky" onClick={() => handleFileClick(document)}>
+                        <button
+                          type="button"
+                          className="button button-sky"
+                          onClick={() => handleFileClick(document)}
+                        >
                           Pogledaj
                         </button>
-                        <button type="button" className="button button-red" 
-                        disabled={!authUser?.roles.some((role) => role.userRole.roleName === "Admin") || !(authUser?.userId === selectedComment?.user?.userId) || isIssueResolved} 
-                        onClick={() => handleDelete(document)}>
+                        <button
+                          type="button"
+                          className="button button-red"
+                          disabled={
+                            !authUser?.roles.some(
+                              (role) => role.userRole.roleName === "Admin",
+                            ) ||
+                            !(
+                              authUser?.userId === selectedComment?.user?.userId
+                            ) ||
+                            isIssueResolved
+                          }
+                          onClick={() => handleDelete(document)}
+                        >
                           Obriši
                         </button>
                       </div>
@@ -232,22 +263,39 @@ const HandleFiles = ({
               <h4>Dodaj nove datoteke: </h4>
 
               <div>
-                <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
+                <form
+                  onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+                    handleSubmit(e)
+                  }
+                >
                   <div className="mt-2">
                     <div>
                       <input
                         required
                         ref={fileInputRef}
                         type="file"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleAddFiles(e)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          handleAddFiles(e)
+                        }
                         id="addFilesForm"
-                        disabled={isIssueResolved || selectedComment?.user?.userId !== authUser?.userId}
+                        disabled={
+                          isIssueResolved ||
+                          selectedComment?.user?.userId !== authUser?.userId
+                        }
                         multiple
                         accept={allowedExtensions.join(", ")}
                       />
                     </div>
                     <div className="mt-2 flex items-center justify-end">
-                      <button type="submit" disabled={error || isIssueResolved || selectedComment?.user?.userId !== authUser?.userId} className="button button-sky ms-2">
+                      <button
+                        type="submit"
+                        disabled={
+                          error ||
+                          isIssueResolved ||
+                          selectedComment?.user?.userId !== authUser?.userId
+                        }
+                        className="button button-sky ms-2"
+                      >
                         Dodaj
                       </button>
                     </div>
@@ -259,7 +307,11 @@ const HandleFiles = ({
               <div className="my-4 h-0.5 bg-zinc-400"></div>
 
               <div className="flex flex-row-reverse gap-2">
-                <button type="button" className="button button-gray" onClick={handleCancel}>
+                <button
+                  type="button"
+                  className="button button-zinc"
+                  onClick={handleCancel}
+                >
                   Zatvori
                 </button>
               </div>

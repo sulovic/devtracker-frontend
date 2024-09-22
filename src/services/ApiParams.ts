@@ -1,4 +1,10 @@
-import type { ApiPageParams, AuthUser, FiltersType, PaginationType, Status } from "../types/types";
+import type {
+  ApiPageParams,
+  AuthUser,
+  FiltersType,
+  PaginationType,
+  Status,
+} from "../types/types";
 
 const ApiParams = ({
   authUser,

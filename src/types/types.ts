@@ -36,6 +36,8 @@ export type ParamsContextType = {
   allTypes: Type[];
   allStatuses: Status[];
   allUserRoles: UserRole[];
+  isDarkMode: boolean;
+  setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type AxiosLoginResponse = {

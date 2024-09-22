@@ -26,8 +26,7 @@ export const handleApiError: (error: any) => void = (error) => {
       position: "top-center",
     });
     console.error(error);
-  }
-   else if (error.response?.status === 409) {
+  } else if (error.response?.status === 409) {
     toast.error("Podatak nije dodat! Ovaj podatak već postoji.", {
       position: "top-center",
     });
@@ -38,9 +37,12 @@ export const handleApiError: (error: any) => void = (error) => {
     });
     console.error(error);
   } else if (error.request) {
-    toast.error("Error: No response received from server. Please check your server or internet connection.", {
-      position: "top-center",
-    });
+    toast.error(
+      "Error: No response received from server. Please check your server or internet connection.",
+      {
+        position: "top-center",
+      },
+    );
     console.error(error);
   } else {
     toast.error(`Unexpected Error: Please try again later.`, {
