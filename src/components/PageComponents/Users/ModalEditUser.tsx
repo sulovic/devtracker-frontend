@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import type { AuthUser, UserRole } from "../../../types/types";
 import { AxiosInstance } from "axios";
 import useParams from "../../../hooks/useParams";
+import { handleApiError } from "../../../services/errorHandlers";
 
 const ModalEditUser: React.FC<{
   setShowModalEditUser: React.Dispatch<React.SetStateAction<boolean>>;
@@ -65,10 +66,7 @@ const ModalEditUser: React.FC<{
         );
       }
     } catch (err) {
-      console.log(err);
-      toast.error(`Ups! Došlo je do greške: ${err}`, {
-        position: "top-center",
-      });
+      handleApiError(err);
     } finally {
       setShowSpinner(false);
       setShowModal(false);

@@ -64,15 +64,15 @@ const Issue: React.FC = () => {
               Pregled zahteva {issue?.type?.typeName}-{issue?.issueId}
             </h3>
             <div className="grid grid-cols-1 gap-4 pb-4 lg:grid-cols-4">
-              <div className="flex items-center justify-center gap-2 rounded-sm border-2 border-zinc-300 bg-zinc-50 text-center dark:border-zinc-600 dark:bg-zinc-800">
+              <div className="flex items-center justify-center gap-2 rounded-sm border-2 border-zinc-300 bg-zinc-50 text-center hover:opacity-80 dark:border-zinc-600 dark:bg-zinc-800">
                 <button type="button" onClick={() => navigate(-1)}>
                   <Backward IconClick={() => {}} />
                 </button>
               </div>
-              <div className="flex items-center justify-center rounded-sm border-2 border-zinc-300 bg-zinc-100 lg:col-span-2 dark:border-zinc-600 dark:bg-zinc-800">
+              <div className="flex items-center justify-center rounded-sm border-2 border-zinc-300 bg-zinc-100 text-center lg:col-span-2 dark:border-zinc-600 dark:bg-zinc-800">
                 <h4>{issue?.issueName}</h4>
               </div>
-              <div className="flex items-center justify-center gap-2 rounded-sm border-2 border-zinc-300 bg-zinc-50 text-center dark:border-zinc-600 dark:bg-zinc-800">
+              <div className="flex items-center justify-center gap-2 rounded-sm border-2 border-zinc-300 bg-zinc-50 text-center hover:opacity-80 dark:border-zinc-600 dark:bg-zinc-800">
                 {authUser &&
                   authUser?.roles.some(
                     (role) => role?.userRole?.roleId >= issue?.respRole?.roleId,

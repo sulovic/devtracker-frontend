@@ -33,6 +33,9 @@ const ApiParams = ({
   if (filters?.product?.productName) {
     apiParams += `&productId=${filters?.product?.productName}`;
   }
+  if (filters?.searchString) {
+    apiParams += `&search=${filters?.searchString}`;
+  }
 
   switch (apiPageParams) {
     case "MyIssues":

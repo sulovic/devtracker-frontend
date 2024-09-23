@@ -10,8 +10,8 @@ const IssueSection: React.FC<{ issue: Issue }> = ({ issue }) => {
     <>
       <div className="mt-2">
         <h5>Opis zahteva: </h5>
-        <div className="grid grid-cols-2 rounded-sm border-2 border-zinc-300 bg-zinc-100 px-2 lg:grid-cols-4 dark:border-zinc-600 dark:bg-zinc-800">
-          <div className="min-h-12 lg:col-span-3">
+        <div className="grid grid-cols-1 rounded-sm border-2 border-zinc-300 bg-zinc-100 px-2 lg:grid-cols-4 dark:border-zinc-600 dark:bg-zinc-800">
+          <div className="lg:col-span-3">
             <p> {issue?.issueDesc}</p>
           </div>
           <div className="text-right">

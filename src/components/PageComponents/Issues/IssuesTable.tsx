@@ -31,12 +31,12 @@ const IssuesTable: React.FC<{
         pagination={pagination}
         setPagination={setPagination}
       />
-      <div className="relative mb-2 overflow-x-auto shadow-lg sm:rounded-lg">
-        <div className="table-responsive p-3">
+      <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
+        <div className="table-responsive py-4">
           <table className="w-full text-sm text-zinc-500 rtl:text-right dark:text-zinc-400">
             <thead>
               <tr>
-                <th></th>
+                <th>RB</th>
                 <th>Tip-ID</th>
                 <th className="w-5/12">Naziv</th>
                 <th>Proizvod</th>
@@ -74,7 +74,7 @@ const IssuesTable: React.FC<{
                       </td>
                       <td key={`issuePriority_${index}`}>
                         <p
-                          className={`${issue.priority.priorityName === "Low" ? "bg-green-100" : issue.priority.priorityName === "Medium" ? "bg-sky-100" : "bg-red-100"} text-zinc-600`}
+                          className={`${issue.priority.priorityName === "Low" ? "bg-green-200" : issue.priority.priorityName === "Medium" ? "bg-sky-200" : "bg-red-200"} text-zinc-600`}
                         >
                           {issue?.priority?.priorityName}
                         </p>
@@ -83,7 +83,7 @@ const IssuesTable: React.FC<{
                   ))
                 : !showSpinner && (
                     <tr>
-                      <td colSpan={6} className="p-3">
+                      <td colSpan={8} className="p-3">
                         Nema podataka o zahtevima...
                       </td>
                     </tr>

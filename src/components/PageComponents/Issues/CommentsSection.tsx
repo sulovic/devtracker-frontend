@@ -23,9 +23,6 @@ const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
   const axiosPrivate = useAxiosPrivate();
-
-  console.log(issue?.status?.statusName !== "Closed");
-
   const handleDeleteCommentOk: () => void = async () => {
     try {
       setShowSpinner(true);
@@ -63,9 +60,9 @@ const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({
           issue?.comments?.map((comment) => (
             <div
               key={`text-${comment?.commentId}`}
-              className="mb-2 grid grid-cols-2 rounded-sm border-2 border-zinc-200 bg-zinc-50 px-2 lg:grid-cols-4 dark:border-zinc-600 dark:bg-zinc-800"
+              className="mb-2 grid grid-cols-1 rounded-sm border-2 border-zinc-200 bg-zinc-50 px-2 lg:grid-cols-4 dark:border-zinc-600 dark:bg-zinc-800"
             >
-              <div className="min-h-12 lg:col-span-3">
+              <div className="lg:col-span-3">
                 <p>{comment?.commentText}</p>
               </div>
               <div className="text-right">
@@ -78,7 +75,7 @@ const CommentsSection: React.FC<{ issue: Issue; fetchIssue: () => void }> = ({
                       }}
                       className="button button-sky"
                     >
-                      Dokumenta : {comment?.documents?.length}
+                      Fajlovi : {comment?.documents?.length}
                     </button>
                   </div>
                   {authUser &&

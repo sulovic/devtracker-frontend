@@ -212,13 +212,13 @@ const HandleFiles = ({
             <div className="w-full sm:mt-0">
               {/* Modal Head */}
 
-              <h3>Pregled datoteka</h3>
+              <h3>Pregled fajlova</h3>
               <div className="my-4 h-0.5 bg-zinc-400"></div>
 
               {/* Modal Body */}
 
               <div className="grid grid-cols-1">
-                <h4>Prikačene datoteke: </h4>
+                <h4>Prikačeni fajlovi: </h4>
 
                 <div>
                   {selectedComment?.documents &&
@@ -255,12 +255,12 @@ const HandleFiles = ({
                       </div>
                     ))
                   ) : (
-                    <p>Nema prikačenih datoteka...</p>
+                    <p>Nema prikačenih fajlova...</p>
                   )}
                 </div>
               </div>
 
-              <h4>Dodaj nove datoteke: </h4>
+              <h4>Dodaj nove fajlove: </h4>
 
               <div>
                 <form

@@ -6,7 +6,7 @@ const Pagination: React.FC<{
   setPagination: React.Dispatch<React.SetStateAction<PaginationType>>;
 }> = ({ pagination, setPagination }) => {
   return (
-    <div className="mt-4 flex justify-end">
+    <div className="flex justify-end">
       <div className="flex justify-end gap-4">
         <button
           type="button"

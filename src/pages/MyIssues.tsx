@@ -71,7 +71,7 @@ const MyIssues: React.FC = () => {
     <>
       <Navbar Links={DashboardLinks} />
       <div className="mx-2 md:mx-4">
-        <div className="mb-2 flex px-3">
+        <div className="mb-2 flex">
           <h3>Moji zahtevi - Pregled unetih zahteva</h3>
           {authUser?.roles.some((role) => role?.userRole?.roleId === 1001) && (
             <div className="flex flex-grow items-center justify-end">

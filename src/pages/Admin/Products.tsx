@@ -100,7 +100,7 @@ const Products: React.FC = () => {
         {/* Render main data DIV */}
 
         <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
-          <div className="table-responsive p-3">
+          <div className="table-responsive">
             <table className="w-full text-center text-sm text-zinc-500 rtl:text-right dark:text-zinc-400">
               <thead className="bg-zinc-200 uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400">
                 <tr>

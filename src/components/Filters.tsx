@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FiltersType, PaginationType } from "../types/types";
 import useParams from "../hooks/useParams";
 import { useLocation } from "react-router-dom";
@@ -10,6 +10,7 @@ const Filters: React.FC<{
   setPagination: React.Dispatch<React.SetStateAction<PaginationType>>;
 }> = ({ filters, setFilters, pagination, setPagination }) => {
   const { allProducts, allPriorities, allTypes, allStatuses } = useParams();
+  const [tempSearchString, setTempSearchString] = useState<string>("");
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const Filters: React.FC<{
       {/* Product filter */}
       <select
         name="product"
+        area-label="Product"
         value={filters?.product?.productName}
         onChange={(e) => {
           setFilters({
@@ -41,6 +43,7 @@ const Filters: React.FC<{
       {/* Type filter */}
       <select
         name="type"
+        area-label="Type"
         value={filters?.type?.typeName}
         onChange={(e) => {
           setFilters({
@@ -59,6 +62,7 @@ const Filters: React.FC<{
       {/* Priority filter */}
       <select
         name="priority"
+        area-label="Priority"
         value={filters?.priority?.priorityName}
         onChange={(e) => {
           setFilters({
@@ -80,6 +84,7 @@ const Filters: React.FC<{
       {(pathname === "/my-issues" || pathname === "/admin/all-issues") && (
         <select
           name="status"
+          area-label="Status"
           value={filters?.status?.statusName}
           onChange={(e) => {
             setFilters({
@@ -98,6 +103,26 @@ const Filters: React.FC<{
           ))}
         </select>
       )}
+
+      {/* Priority filter */}
+      <div className="flex gap-2">
+        <div className="mx-2 my-0 hidden h-full w-0.5 bg-zinc-400 md:block"></div>
+
+        <input
+          className="w-40"
+          name="search"
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e?.key === "Enter") {
+              setFilters({ ...filters, searchString: tempSearchString });
+            }
+          }}
+          placeholder="Pretraga..."
+          value={tempSearchString}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setTempSearchString(e?.target?.value);
+          }}
+        />
+      </div>
     </div>
   );
 };

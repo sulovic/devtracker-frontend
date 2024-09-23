@@ -49,6 +49,7 @@ export type FiltersType = {
   priority?: Priority | undefined;
   type?: Type | undefined;
   status?: Status | undefined;
+  searchString?: string | undefined;
 };
 
 export type Product = {

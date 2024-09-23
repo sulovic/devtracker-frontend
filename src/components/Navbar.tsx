@@ -45,7 +45,7 @@ const DropDown: React.FC<{ link: NavbarLinks; index: number }> = ({
         {isOpen && (
           <div
             ref={menuRef}
-            className="absolute right-0 mt-4 min-w-40 bg-sky-400 px-4 pt-2 font-medium shadow-lg ring-1 ring-sky-200 ring-opacity-20"
+            className="absolute right-0 mt-4 min-w-40 bg-sky-400 px-4 pt-2 font-medium shadow-lg ring-1 ring-sky-200 ring-opacity-20 dark:bg-sky-600"
           >
             <ul
               role="menu"
