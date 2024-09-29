@@ -55,7 +55,7 @@ const IssuesTable: React.FC<{
                     >
                       <td key={`index_${index}`}>{index + 1}</td>
                       <td className="uppercase" key={`issueId_${index}`}>
-                        <p className="bg-zinc-100 text-zinc-600">
+                        <p className="bg-zinc-100 px-2 text-zinc-600">
                           {issue?.type?.typeName}-{issue?.issueId}
                         </p>
                       </td>
@@ -74,7 +74,7 @@ const IssuesTable: React.FC<{
                       </td>
                       <td key={`issuePriority_${index}`}>
                         <p
-                          className={`${issue.priority.priorityName === "Low" ? "bg-green-200" : issue.priority.priorityName === "Medium" ? "bg-sky-200" : "bg-red-200"} text-zinc-600`}
+                          className={`px-2 uppercase ${issue.priority.priorityName === "Low" ? "bg-green-200" : issue.priority.priorityName === "Medium" ? "bg-sky-200" : "bg-red-200"} text-zinc-600`}
                         >
                           {issue?.priority?.priorityName}
                         </p>

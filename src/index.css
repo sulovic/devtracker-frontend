@@ -97,7 +97,7 @@ th {
 }
 
 tr {
-  @apply border-b bg-white hover:cursor-pointer hover:bg-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:text-zinc-600;
+  @apply border-b bg-white hover:cursor-pointer hover:bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:text-zinc-600;
 }
 
 input[type="checkbox"] {

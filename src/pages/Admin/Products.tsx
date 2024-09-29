@@ -83,7 +83,7 @@ const Products: React.FC = () => {
     <>
       <Navbar Links={DashboardLinks} />
       <div className="mx-2 md:mx-4">
-        <div className="mb-2 flex px-3">
+        <div className="flex">
           <h3>Proizvodi</h3>
           <div className="flex flex-grow items-center justify-end">
             <button
@@ -99,8 +99,8 @@ const Products: React.FC = () => {
 
         {/* Render main data DIV */}
 
-        <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
-          <div className="table-responsive">
+        <div className="relative overflow-x-auto shadow-lg">
+          <div className="table-responsive py-4">
             <table className="w-full text-center text-sm text-zinc-500 rtl:text-right dark:text-zinc-400">
               <thead className="bg-zinc-200 uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400">
                 <tr>

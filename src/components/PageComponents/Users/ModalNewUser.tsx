@@ -86,7 +86,7 @@ const ModalNewUser: React.FC<{
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
         >
           <div className="relative w-full max-w-3xl transform overflow-hidden rounded-lg bg-white p-4 text-left shadow-xl transition-all sm:p-8 dark:bg-zinc-800">
-            <div className="w-full py-4 sm:mt-0">
+            <div className="w-full sm:mt-0">
               {/* Modal Head */}
               <div className="text-left">
                 <h4>Dodavanje novog korisnika</h4>

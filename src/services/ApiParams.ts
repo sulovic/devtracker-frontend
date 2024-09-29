@@ -14,12 +14,16 @@ const ApiParams = ({
   apiPageParams,
 }: {
   authUser: AuthUser;
-  filters: FiltersType | undefined;
-  pagination: PaginationType;
+  filters?: FiltersType | undefined;
+  pagination?: PaginationType;
   allStatuses?: Status[];
   apiPageParams: ApiPageParams;
 }): string => {
-  let apiParams: string = `?page=${pagination.page}&limit=${pagination.limit}`;
+  if (pagination && filters) {
+    var apiParams: string = `?page=${pagination.page}&limit=${pagination.limit}`;
+  } else {
+    var apiParams: string = "?";
+  }
 
   if (filters?.type?.typeId) {
     apiParams += `&typeId=${filters?.type?.typeId}`;
@@ -69,6 +73,16 @@ const ApiParams = ({
           }
         });
         apiParams += `&statusId=${activeStatuses.join(",")}`;
+      }
+      break;
+
+    //Get all data / remove pagination / for dashboard
+
+    case "Dashboard":
+      if (authUser?.roles.some((role) => role?.userRole?.roleId === 5001)) {
+        apiParams = "";
+      } else {
+        apiParams = `?userId=${authUser?.userId}`;
       }
 
       break;

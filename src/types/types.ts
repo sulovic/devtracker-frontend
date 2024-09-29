@@ -134,10 +134,30 @@ export type Documents = {
 
 export type SelectorProperties = "product" | "type" | "status" | "priority";
 
-export type ApiPageParams = "MyIssues" | "Triage" | "Resolve" | "Admin";
+export type ApiPageParams =
+  | "MyIssues"
+  | "Triage"
+  | "Resolve"
+  | "Admin"
+  | "Dashboard";
 
 export type PaginationType = {
   limit: 10 | 25 | 50 | 100;
   page: number;
   count: number;
 };
+
+
+
+export type ChartDataType = {
+  key: string;
+  value: number;
+}[];
+
+export type IssuesStatisticsType = {
+issueStatusData: ChartDataType;
+issuesRespRoleData: ChartDataType;
+issuesProductData: ChartDataType;
+issuesTypeData: ChartDataType;
+};
+
