@@ -11,8 +11,8 @@ import { ChartDataType } from "../../types/types";
 
 const PieChartComponent: React.FC<{
   name: string;
-  data: ChartDataType;
-}> = ({ name, data }) => {
+  chartData: ChartDataType;
+}> = ({ name, chartData }) => {
   const COLORS = ["#0088FE", "#FF8042", "#FFBB28", "#00C49F"];
 
   const RADIAN = Math.PI / 180;
@@ -55,7 +55,7 @@ const PieChartComponent: React.FC<{
               margin={{ top: 50, right: 5, left: 5, bottom: 20 }}
             />
             <Pie
-              data={data}
+              data={chartData}
               cx="50%"
               cy="50%"
               innerRadius={60}
@@ -67,7 +67,7 @@ const PieChartComponent: React.FC<{
               label={renderCustomizedLabel}
               labelLine={false}
             >
-              {data.map((entry, index) => (
+              {chartData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}
