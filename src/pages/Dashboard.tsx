@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
           <div>
             <IssuesKanbanTable issuesData={issuesData} />
           </div>
-          <h4 className="my-4 text-center">Statistika aktivnih zahteva</h4>
+          <h4 className="my-4 text-center">Statistika zahteva</h4>
           <div className="grid grid-cols-1 items-center justify-center sm:grid-cols-2 lg:grid-cols-4">
             {chartData && (
               <PieChartComponent

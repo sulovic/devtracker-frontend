@@ -47,7 +47,8 @@ const ApiRefreshConnector: () => Promise<
       throw new Error("No response from server");
     }
   } catch (error: any) {
-    handleApiError(error);
+    // Comment to avoid toast on login Page
+    // handleApiError(error);
   }
 };
 
